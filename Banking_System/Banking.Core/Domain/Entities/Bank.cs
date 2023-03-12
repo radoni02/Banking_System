@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Banking.Core.Domain.Entities
 {
-    public class Bank
+    internal class Bank
     {
         public string Name { get;private set; }
         public string Krs { get; private set; }

@@ -1,4 +1,5 @@
 ﻿using Banking.Core.Domain.Consts;
+using Banking.Core.Domain.Primitives;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,9 +8,23 @@ using System.Threading.Tasks;
 
 namespace Banking.Core.Domain.Entities
 {
-    internal class BankAccount
+    internal sealed class BankAccount : Entity 
     {
-        public Guid BankAccountId { get;private set; }
+        public BankAccount(Guid bankAccountId,
+            Guid ownerId,
+            decimal accountBalance,
+            AccountType type,
+            BankingCard card,
+            DateTime createdAt,
+            DateTime modifiedAt) : base(bankAccountId)
+        {
+            OwnerId = ownerId;
+            AccountBalance = accountBalance;
+            Type = type;
+            Card = card;
+            CreatedAt = createdAt;
+            ModifiedAt = modifiedAt;
+        }
         public Guid OwnerId { get;private set; }
         public decimal AccountBalance { get;private set; }
         public AccountType Type { get;private set; }

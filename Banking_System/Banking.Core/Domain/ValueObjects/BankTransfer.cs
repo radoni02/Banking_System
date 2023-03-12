@@ -12,7 +12,7 @@ namespace Banking.Core.Domain.ValueObjects
         public DateTime CreatedAt { get;init; }
         public bool IsConstant { get;init; }
         public string Title { get; init; }
-        public decimal Amount { get; set; }
+        public decimal Amount { get; init; }
         public string ReceiverAdressAndData { get; init; }
         public string AccountNumber { get; init; }
 
