@@ -1,5 +1,6 @@
 ﻿using Banking.Core.Domain.Consts;
 using Banking.Core.Domain.Primitives;
+using Banking.Core.Domain.ValueObjects;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -31,5 +32,6 @@ namespace Banking.Core.Domain.Entities
         public BankingCard Card { get;private set; }
         public DateTime CreatedAt { get;private set; }
         public DateTime ModifiedAt { get;private set; }
+        public List<BankTransfer> Transfers { get; private set; } = new();
     }
 }
