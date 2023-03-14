@@ -9,7 +9,6 @@ namespace Banking.Core.Domain.Entities
 {
     internal sealed class BankingCard : Entity
     {
-       
         public BankingCard(Guid accountId,
             string accountNumber,
             DateTime cardValidityDate) : base(accountId)
@@ -17,7 +16,7 @@ namespace Banking.Core.Domain.Entities
             AccountNumber = accountNumber;
             CardValidityDate = cardValidityDate;
         }
-        public string AccountNumber { get;private set; }
+        public string AccountNumber { get;private set; }  //we need account number generator service
 
         public DateTime CardValidityDate { get;private set; }
     }

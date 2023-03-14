@@ -15,6 +15,7 @@ namespace Banking.Core.Domain.ValueObjects
         public decimal Amount { get; init; }
         public string ReceiverAdressAndData { get; init; }
         public string AccountNumber { get; init; }
+        public string Currency { get;private set; }
 
     }
 }

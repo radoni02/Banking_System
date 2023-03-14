@@ -1,5 +1,6 @@
 ﻿using Banking.Core.Domain.Consts;
 using Banking.Core.Domain.Primitives;
+using Banking.Core.Domain.ValueObjects;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,9 +16,9 @@ namespace Banking.Core.Domain.Entities
             string firstName,
             string lastName,
             Gender gender,
-            string pesel,
+            Pesel pesel,
             string login,
-            string phoneNumber,
+            PhoneNumber phoneNumber,
             string adressEmail,
             DateTime createdAt,
             List<BankAccount> accounts) : base(userId)
@@ -35,9 +36,9 @@ namespace Banking.Core.Domain.Entities
         public string FirstName { get;private set; }
         public string LastName { get;private set; }
         public Gender Gender { get; init; }
-        public string Pesel { get; init; }
+        public Pesel Pesel { get; init; } 
         public string Login { get;private set; }
-        public string PhoneNumber { get;private set; }
+        public PhoneNumber PhoneNumber { get;private set; }
         public string AdressEmail { get;private set; }
         public DateTime CreatedAt { get; init; }
 
