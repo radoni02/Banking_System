@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Banking.Core.Domain.Entities
 {
-    internal sealed class User : Entity
+    internal sealed class User : AggregateRoot
     {
         public User(
             Guid userId,
