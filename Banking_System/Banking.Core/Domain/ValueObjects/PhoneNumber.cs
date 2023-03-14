@@ -1,4 +1,5 @@
-﻿using Banking.Core.Domain.Primitives;
+﻿using Banking.Core.Domain.Exceptions;
+using Banking.Core.Domain.Primitives;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,15 +24,15 @@ namespace Banking.Core.Domain.ValueObjects
         {
             if(string.IsNullOrWhiteSpace(phoneNumber))
             {
-                throw new Exception();
+                throw new EmptyValueException(phoneNumber);
             }
             if(phoneNumber.Length != ValidLength)
             {
-                throw new Exception();
+                throw new InvalidLengthException(phoneNumber);
             }
             if(!Regex.Match(phoneNumber, @"^\d+$").Success)
             {
-                throw new Exception(); //checks if the phone number has only digits
+                throw new InvalidCharactersException(phoneNumber); //checks if the phone number has only digits
             }
             return new PhoneNumber(phoneNumber);
         }

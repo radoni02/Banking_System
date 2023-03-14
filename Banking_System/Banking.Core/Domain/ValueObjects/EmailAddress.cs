@@ -1,4 +1,5 @@
-﻿using Banking.Core.Domain.Primitives;
+﻿using Banking.Core.Domain.Exceptions;
+using Banking.Core.Domain.Primitives;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,11 +21,11 @@ namespace Banking.Core.Domain.ValueObjects
         { 
             if(string.IsNullOrWhiteSpace(emailAddress))
             {
-                throw new Exception();
+                throw new EmptyValueException(emailAddress);
             }
             if(!emailAddress.Contains('@'))
             {
-                throw new Exception();
+                throw new InvalidEmailProvidedException();
             }
             return new EmailAddress(emailAddress);
         }

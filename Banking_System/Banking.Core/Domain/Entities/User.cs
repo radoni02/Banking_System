@@ -19,7 +19,7 @@ namespace Banking.Core.Domain.Entities
             Pesel pesel,
             string login,
             PhoneNumber phoneNumber,
-            string adressEmail,
+            EmailAddress emailAddress,
             DateTime createdAt,
             List<BankAccount> accounts) : base(userId)
         {
@@ -29,7 +29,7 @@ namespace Banking.Core.Domain.Entities
             Pesel = pesel;
             Login = login;
             PhoneNumber = phoneNumber;
-            AdressEmail = adressEmail;
+            EmailAddress = emailAddress;
             CreatedAt = createdAt;
             Accounts = accounts;
         }
@@ -39,7 +39,7 @@ namespace Banking.Core.Domain.Entities
         public Pesel Pesel { get; init; } 
         public string Login { get;private set; }
         public PhoneNumber PhoneNumber { get;private set; }
-        public string AdressEmail { get;private set; }
+        public EmailAddress EmailAddress { get;private set; }
         public DateTime CreatedAt { get; init; }
 
         public List<BankAccount> Accounts { get; set; } = new();
