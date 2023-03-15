@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Banking.Core.Domain.Consts
 {
-    internal enum AccountType
+    public enum AccountType
     {
         PersonalAccount = 0,
         CompanyAccount = 1,

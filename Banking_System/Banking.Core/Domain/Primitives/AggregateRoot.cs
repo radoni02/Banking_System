@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Banking.Core.Domain.Primitives
 {
-    internal abstract class AggregateRoot : Entity 
+    public abstract class AggregateRoot : Entity 
     {
         protected AggregateRoot(Guid id) : base(id)
         {

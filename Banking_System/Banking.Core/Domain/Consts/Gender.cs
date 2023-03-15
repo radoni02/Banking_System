@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Banking.Core.Domain.Consts
 {
-    internal enum Gender
+    public enum Gender
     {
         Female = 0,
         Male = 1

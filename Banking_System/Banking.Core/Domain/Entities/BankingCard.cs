@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Banking.Core.Domain.Entities
 {
-    internal sealed class BankingCard : Entity
+    public sealed class BankingCard : Entity
     {
         public BankingCard(Guid accountId,
             string accountNumber,

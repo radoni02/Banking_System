@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Banking.Core.Domain.Entities
 {
-    internal sealed class BankAccount : Entity 
+    public sealed class BankAccount : Entity 
     {
         public BankAccount(Guid bankAccountId,
             Guid ownerId,
@@ -32,6 +32,7 @@ namespace Banking.Core.Domain.Entities
         public BankingCard Card { get;private set; }
         public DateTime CreatedAt { get;private set; }
         public DateTime ModifiedAt { get;private set; }
+        public Pin Pin { get;private set; }
         public List<BankTransfer> Transfers { get; private set; } = new();
     }
 }

@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Banking.Core.Domain.Entities
 {
-    internal sealed class User : AggregateRoot
+    public sealed class User : AggregateRoot
     {
         private readonly List<BankAccount> _accounts = new();
         private User(

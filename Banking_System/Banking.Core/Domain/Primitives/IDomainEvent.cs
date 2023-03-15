@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Banking.Core.Domain.Primitives
 {
-    internal interface IDomainEvent
+    public interface IDomainEvent
     {
     }
 }
