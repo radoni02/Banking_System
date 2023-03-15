@@ -1,4 +1,5 @@
 ﻿using Banking.Core.Domain.Consts;
+using Banking.Core.Domain.Events;
 using Banking.Core.Domain.Primitives;
 using Banking.Core.Domain.ValueObjects;
 using System;
@@ -11,7 +12,8 @@ namespace Banking.Core.Domain.Entities
 {
     internal sealed class User : AggregateRoot
     {
-        public User(
+        private readonly List<BankAccount> _accounts = new();
+        private User(
             Guid userId,
             string firstName,
             string lastName,
@@ -20,8 +22,8 @@ namespace Banking.Core.Domain.Entities
             string login,
             PhoneNumber phoneNumber,
             EmailAddress emailAddress,
-            DateTime createdAt,
-            List<BankAccount> accounts) : base(userId)
+            DateTime createdAt//,
+            /*List<BankAccount> accounts*/) : base(userId)
         {
             FirstName = firstName;
             LastName = lastName;
@@ -31,7 +33,7 @@ namespace Banking.Core.Domain.Entities
             PhoneNumber = phoneNumber;
             EmailAddress = emailAddress;
             CreatedAt = createdAt;
-            Accounts = accounts;
+            //_accounts = accounts;  //there were change
         }
         public string FirstName { get;private set; }
         public string LastName { get;private set; }
@@ -42,7 +44,57 @@ namespace Banking.Core.Domain.Entities
         public EmailAddress EmailAddress { get;private set; }
         public DateTime CreatedAt { get; init; }
 
-        public List<BankAccount> Accounts { get; set; } = new();
+        public IEnumerable<BankAccount> Accounts => _accounts;
+
+        internal User( string firstName,
+            string lastName,
+            Gender gender,
+            Pesel pesel,
+            string login,
+            PhoneNumber phoneNumber,
+            EmailAddress emailAddress,
+            DateTime createdAt) :base(Guid.NewGuid())
+        {
+            
+            FirstName = firstName;
+            LastName = lastName;
+            Gender = gender;
+            Pesel = pesel;
+            Login = login;
+            PhoneNumber = phoneNumber;
+            EmailAddress = emailAddress;
+            CreatedAt = createdAt;
+        }
+
+        public void AddBankAccount(BankAccount account)
+        {
+            if(_accounts.Any(x=>x.Id==account.Id))
+            {
+                throw new Exception();
+            }
+            _accounts.Add(account);
+            AddEvent(new BankAccountAdded(this, account));
+        }
+        public void RemoveBankAccount(Guid acconutId)
+        {
+            var account = GetBankAccount(acconutId);
+            _accounts.Remove(account);
+            AddEvent(new BankAccountRemoved(this, account));
+        }
+        public void UpdateBankAccount(Guid acconutId)
+        {
+            var account = GetBankAccount(acconutId);
+            
+        }
+        internal BankAccount GetBankAccount(Guid acconutId)
+        {
+            var account = _accounts.FirstOrDefault(x => x.OwnerId == this.Id && x.Id == acconutId);
+            if(account is null)
+            {
+                throw new Exception();
+            }
+            return account;
+        }
 
     }
 }
