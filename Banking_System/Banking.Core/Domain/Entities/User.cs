@@ -46,16 +46,16 @@ namespace Banking.Core.Domain.Entities
 
         public IEnumerable<BankAccount> Accounts => _accounts;
 
-        internal User( string firstName,
+        internal User(string firstName,
             string lastName,
             Gender gender,
             Pesel pesel,
             string login,
             PhoneNumber phoneNumber,
             EmailAddress emailAddress,
-            DateTime createdAt) :base(Guid.NewGuid())
+            DateTime createdAt) : base(Guid.NewGuid())
         {
-            
+
             FirstName = firstName;
             LastName = lastName;
             Gender = gender;
@@ -88,7 +88,7 @@ namespace Banking.Core.Domain.Entities
         }
         internal BankAccount GetBankAccount(Guid acconutId)
         {
-            var account = _accounts.FirstOrDefault(x => x.OwnerId == this.Id && x.Id == acconutId);
+            var account = _accounts.FirstOrDefault(x=>x.Id == acconutId);
             if(account is null)
             {
                 throw new Exception();

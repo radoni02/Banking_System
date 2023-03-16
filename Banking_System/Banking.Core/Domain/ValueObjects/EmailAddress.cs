@@ -10,7 +10,7 @@ namespace Banking.Core.Domain.ValueObjects
 {
     public sealed class EmailAddress : ValueObject
     {
-        public EmailAddress(string value)
+        private EmailAddress(string value)
         {
             Value = value;
         }

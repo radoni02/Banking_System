@@ -12,7 +12,7 @@ namespace Banking.Core.Domain.Factories.UserFactory
 {
     internal sealed class UserFactory : IUserFactory
     {
-        public User Create(Guid id, string FirstName, string LastName, Gender gender, Pesel pesel, PhoneNumber phoneNumber, EmailAddress emailAddress)
+        public User Create(string FirstName, string LastName, Gender gender, Pesel pesel, PhoneNumber phoneNumber, EmailAddress emailAddress)
         {
             var LoginPart1 = FirstName.Substring(0, 3);
             var LoginPart2 = LastName.Substring(0, 3);

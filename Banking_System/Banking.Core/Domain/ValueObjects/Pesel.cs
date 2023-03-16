@@ -12,7 +12,7 @@ namespace Banking.Core.Domain.ValueObjects
     {
         public const int ValidLength = 11;
         
-        public Pesel(string value)
+        private Pesel(string value)
         {
             Value = value;
         }

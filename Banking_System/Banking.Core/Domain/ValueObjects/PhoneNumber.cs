@@ -13,7 +13,7 @@ namespace Banking.Core.Domain.ValueObjects
     {
         public const int ValidLength = 9;
 
-        public PhoneNumber(string value)
+        private PhoneNumber(string value)
         {
             Value = value;
         }

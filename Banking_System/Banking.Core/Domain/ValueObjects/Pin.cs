@@ -13,7 +13,7 @@ namespace Banking.Core.Domain.ValueObjects
     {
         public const int ValidLength = 4;
 
-        public Pin(string value)
+        private Pin(string value)
         {
             Value = value;
         }
