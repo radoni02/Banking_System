@@ -9,9 +9,8 @@ namespace Banking.Core.Domain.ValueObjects
 {
     public sealed class BankTransfer
     {
-        private BankTransfer(Guid id, DateTime createdAt, bool isConstant, string title, decimal amount, string receiverAdressAndData, AccountNumber accountNumber, Currency currency)
+        private BankTransfer( DateTime createdAt, bool isConstant, string title, decimal amount, string receiverAdressAndData, AccountNumber accountNumber, Currency currency)
         {
-            Id = id;
             CreatedAt = createdAt;
             IsConstant = isConstant;
             Title = title;
@@ -22,7 +21,6 @@ namespace Banking.Core.Domain.ValueObjects
             Status = TransferStatus.Pending;
         }
 
-        public Guid Id { get; }
         public DateTime CreatedAt { get;init; } = DateTime.UtcNow;
         public bool IsConstant { get;init; }
         public string Title { get; init; }
@@ -36,17 +34,19 @@ namespace Banking.Core.Domain.ValueObjects
         {
            if(string.IsNullOrWhiteSpace(title)||string.IsNullOrWhiteSpace(receiverAdressAndData))
            {
+                Status = TransferStatus.Failed;
                 throw new Exception();
            }
            if(amount <= decimal.Zero)
            {
+                Status = TransferStatus.Failed;
                 throw new Exception();
            }
-           return new BankTransfer(Id,CreatedAt, IsConstant, title,amount,receiverAdressAndData, AccountNumber, Currency);
+           return new BankTransfer(CreatedAt, IsConstant, title,amount,receiverAdressAndData, AccountNumber, Currency);
         }
         public BankTransfer ModifyStatus(TransferStatus status)
         {
-            return new BankTransfer(Id,CreatedAt, IsConstant, Title, Amount, ReceiverAdressAndData, AccountNumber, Currency)
+            return new BankTransfer(CreatedAt, IsConstant, Title, Amount, ReceiverAdressAndData, AccountNumber, Currency)
             {
                 Status = status
             };

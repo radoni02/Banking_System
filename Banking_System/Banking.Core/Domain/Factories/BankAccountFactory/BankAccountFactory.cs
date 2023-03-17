@@ -11,7 +11,7 @@ namespace Banking.Core.Domain.Factories.BankAccountFactory
 {
     public sealed class BankAccountFactory : IBankAccountFactory
     {
-        public BankAccount CreatePersonalAcconut(Money accountBalance, Guid ownerId, AccountType type, BankingCard card, DateTime createdAt, DateTime modifiedAt)
-        => new BankAccount(ownerId,accountBalance, type, card, createdAt, modifiedAt);
+        public BankAccount CreatePersonalAcconut(Money accountBalance, Guid ownerId, AccountType type, BankingCard card, DateTime createdAt, DateTime modifiedAt, AccountNumber accountNumber)
+        => new BankAccount(ownerId,accountBalance, type, card, createdAt, modifiedAt, accountNumber);
     }
 }

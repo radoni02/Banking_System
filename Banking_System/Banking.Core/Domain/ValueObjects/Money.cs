@@ -19,9 +19,15 @@ namespace Banking.Core.Domain.ValueObjects
 
         public Currency Currency { get; init; }
 
-        public Money Create(decimal accountBalance)
+        public Money Create(decimal accountBalance,BankCard type)
         {
-            if(accountBalance != 0)
+            
+            if (accountBalance != 0)
+            {
+                throw new Exception();
+            }
+            type = BankCard.DebitCard;
+            if (accountBalance < 0)
             {
                 throw new Exception();
             }

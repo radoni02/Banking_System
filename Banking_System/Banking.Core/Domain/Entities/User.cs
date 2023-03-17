@@ -1,5 +1,6 @@
 ﻿using Banking.Core.Domain.Consts;
 using Banking.Core.Domain.Events;
+using Banking.Core.Domain.Exceptions;
 using Banking.Core.Domain.Primitives;
 using Banking.Core.Domain.ValueObjects;
 using System;
@@ -70,7 +71,7 @@ namespace Banking.Core.Domain.Entities
         {
             if(_accounts.Any(x=>x.Id==account.Id))
             {
-                throw new Exception();
+                throw new BankAccountWithThisIdAlreadyExistsException(account.Id);
             }
             _accounts.Add(account);
             AddEvent(new BankAccountAdded(this, account));
@@ -86,12 +87,12 @@ namespace Banking.Core.Domain.Entities
             var account = GetBankAccount(acconutId);
             
         }
-        internal BankAccount GetBankAccount(Guid acconutId)
+        public BankAccount GetBankAccount(Guid acconutId)
         {
             var account = _accounts.FirstOrDefault(x=>x.Id == acconutId);
             if(account is null)
             {
-                throw new Exception();
+                throw new BankAccountNotFoundException(acconutId);
             }
             return account;
         }

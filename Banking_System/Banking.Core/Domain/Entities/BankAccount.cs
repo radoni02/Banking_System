@@ -1,4 +1,5 @@
 ﻿using Banking.Core.Domain.Consts;
+using Banking.Core.Domain.Exceptions;
 using Banking.Core.Domain.Primitives;
 using Banking.Core.Domain.ValueObjects;
 using System;
@@ -16,7 +17,8 @@ namespace Banking.Core.Domain.Entities
             AccountType type,
             BankingCard card,
             DateTime createdAt,
-            DateTime modifiedAt) : base(bankAccountId)
+            DateTime modifiedAt,
+            AccountNumber accountNumber) : base(bankAccountId)
         {
             OwnerId = ownerId;
             AccountBalance = accountBalance;
@@ -24,12 +26,14 @@ namespace Banking.Core.Domain.Entities
             Card = card;
             CreatedAt = createdAt;
             ModifiedAt = modifiedAt;
+            AccountNumber = accountNumber;
         }
         internal BankAccount(Guid ownerId, Money accountBalance,
             AccountType type,
             BankingCard card,
             DateTime createdAt,
-            DateTime modifiedAt) : base(Guid.NewGuid())
+            DateTime modifiedAt,
+            AccountNumber accountNumber) : base(Guid.NewGuid())
         {
             OwnerId = ownerId;
             AccountBalance = accountBalance;
@@ -37,6 +41,7 @@ namespace Banking.Core.Domain.Entities
             Card = card;
             CreatedAt = createdAt;
             ModifiedAt = modifiedAt;
+            AccountNumber = accountNumber;
         }
 
         public Guid OwnerId { get; private set; }
@@ -46,6 +51,7 @@ namespace Banking.Core.Domain.Entities
         public DateTime CreatedAt { get;private set; }
         public DateTime ModifiedAt { get;private set; }
         public Pin Pin { get;private set; }
+        public AccountNumber AccountNumber { get; private set; }
         public IEnumerable<BankTransfer> Transfers => _transfers;
 
         public void SetPin(Pin pin)
@@ -60,27 +66,29 @@ namespace Banking.Core.Domain.Entities
 
         public void AddTransfer(BankTransfer Banktransfer)
         {
-            var transfer = _transfers.SingleOrDefault(x => x.Id ==Banktransfer.Id);
-            if(transfer is null)
+            if(Banktransfer.Status!=TransferStatus.Successful)
             {
-                throw new Exception();
+                throw new Exception(); //should I throw exception here? maybe unitOFWork pattern
+
             }
-            if(transfer.Status!=TransferStatus.Successful)
-            {
-                throw new Exception();
-            }
-            _transfers.Add(transfer);
+            _transfers.Add(Banktransfer);
         }
         public void SetOwner(Guid ownerId)
         {
             OwnerId = ownerId;
         }
-        public void CheckIfSenderHaveEnoughMoney(decimal amount)
+        public void CheckIfSenderHaveEnoughMoney(decimal amount,BankCard type,TransferStatus status)
         {
             //should be made on Result.Success etc.
-            if (AccountBalance.AccountBalance - amount < 0)
+            if (AccountBalance.AccountBalance - amount < 0 && type == BankCard.DebitCard)
             {
-                throw new Exception();
+                status = TransferStatus.Failed;
+               //throw new Exception(); //here insted of throwing exception maybe status.Faild;
+            }
+            if (AccountBalance.AccountBalance - amount < -500 && type == BankCard.CreditCard) //assuming that on credit card is possible to be only -500 
+            {
+                status = TransferStatus.Failed;
+                //throw new Exception();
             }
 
         }
