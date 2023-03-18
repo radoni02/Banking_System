@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Banking.Core.Domain.ValueObjects
 {
-    public class BankingCard
+    public sealed class BankingCard
     {
         public const int ValidLengthofCardNumber = 16;
         public const int ValidLengthOfCVV = 3;

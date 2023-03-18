@@ -48,7 +48,7 @@ namespace Banking.Core.Domain.Entities
         public Money AccountBalance { get; private set; }
         public AccountType Type { get;private set; }
         public BankingCard Card { get;private set; }
-        public DateTime CreatedAt { get;private set; }
+        public DateTime CreatedAt { get; init; }
         public DateTime ModifiedAt { get;private set; }
         public Pin Pin { get;private set; }
         public AccountNumber AccountNumber { get; private set; }
@@ -92,6 +92,7 @@ namespace Banking.Core.Domain.Entities
             }
 
         }
+        //method for update cardtype,Money(Balance)update
 
     }
 }

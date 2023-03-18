@@ -23,8 +23,7 @@ namespace Banking.Core.Domain.Entities
             string login,
             PhoneNumber phoneNumber,
             EmailAddress emailAddress,
-            DateTime createdAt//,
-            /*List<BankAccount> accounts*/) : base(userId)
+            DateTime createdAt) : base(userId)
         {
             FirstName = firstName;
             LastName = lastName;
@@ -34,7 +33,6 @@ namespace Banking.Core.Domain.Entities
             PhoneNumber = phoneNumber;
             EmailAddress = emailAddress;
             CreatedAt = createdAt;
-            //_accounts = accounts;  //there were change
         }
         public string FirstName { get;private set; }
         public string LastName { get;private set; }
@@ -44,6 +42,7 @@ namespace Banking.Core.Domain.Entities
         public PhoneNumber PhoneNumber { get;private set; }
         public EmailAddress EmailAddress { get;private set; }
         public DateTime CreatedAt { get; init; }
+        public DateTime ModifiedAt { get; private set; }
 
         public IEnumerable<BankAccount> Accounts => _accounts;
 
@@ -65,6 +64,26 @@ namespace Banking.Core.Domain.Entities
             PhoneNumber = phoneNumber;
             EmailAddress = emailAddress;
             CreatedAt = createdAt;
+        }
+
+        public void SetLastName(string lastName)
+        {
+            LastName = lastName;
+        }
+
+        public void SetPhoneNumber(PhoneNumber phoneNumber)
+        {
+            PhoneNumber = phoneNumber;
+        }
+
+        public void SetEmailAddress(EmailAddress emailAddress)
+        {
+            EmailAddress = emailAddress;
+        }
+
+        public void UserModifiedAt()
+        {
+            ModifiedAt = DateTime.UtcNow;
         }
 
         public void AddBankAccount(BankAccount account)
