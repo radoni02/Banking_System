@@ -101,11 +101,6 @@ namespace Banking.Core.Domain.Entities
             _accounts.Remove(account);
             AddEvent(new BankAccountRemoved(this, account));
         }
-        public void UpdateBankAccount(Guid acconutId)
-        {
-            var account = GetBankAccount(acconutId);
-            
-        }
         public BankAccount GetBankAccount(Guid acconutId)
         {
             var account = _accounts.FirstOrDefault(x=>x.Id == acconutId);

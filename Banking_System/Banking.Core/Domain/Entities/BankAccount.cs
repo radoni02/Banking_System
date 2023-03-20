@@ -1,4 +1,5 @@
 ﻿using Banking.Core.Domain.Consts;
+using Banking.Core.Domain.Events;
 using Banking.Core.Domain.Exceptions;
 using Banking.Core.Domain.Primitives;
 using Banking.Core.Domain.ValueObjects;
@@ -59,24 +60,42 @@ namespace Banking.Core.Domain.Entities
             Pin = pin;
         }
 
-        public void AcconutModifiedAt()
+        public void SetCard(BankingCard card)
+        {
+            Card = card;
+        }
+
+        public void SetType(AccountType type)
+        {
+            Type = type;
+        }
+
+        public void AccountModifiedAt()
         {
             ModifiedAt = DateTime.UtcNow;
         }
 
-        public void AddTransfer(BankTransfer Banktransfer)
+        public void SetAccountNumber(AccountNumber accountNumber)
         {
-            if(Banktransfer.Status!=TransferStatus.Successful)
-            {
-                throw new Exception(); //should I throw exception here? maybe unitOFWork pattern
-
-            }
-            _transfers.Add(Banktransfer);
+            AccountNumber = accountNumber;
         }
+
         public void SetOwner(Guid ownerId)
         {
             OwnerId = ownerId;
         }
+
+        public void AddTransfer(BankTransfer banktransfer)
+        {
+            if(banktransfer.Status!=TransferStatus.Successful)
+            {
+                throw new Exception(); //should I throw exception here? maybe unitOFWork pattern
+
+            }
+            _transfers.Add(banktransfer);
+            AddEvent(new BankTransferAdded(this, banktransfer));
+        }
+       
         public void CheckIfSenderHaveEnoughMoney(decimal amount,BankCard type,TransferStatus status)
         {
             //should be made on Result.Success etc.
@@ -92,7 +111,33 @@ namespace Banking.Core.Domain.Entities
             }
 
         }
-        //method for update cardtype,Money(Balance)update
+        public void UpdateBankAcconut(Guid ownerId,AccountType type,BankingCard card,AccountNumber accountNumber)
+        {
+            SetOwner(ownerId);
+            SetType(type);
+            SetCard(card);
+            SetAccountNumber(accountNumber);
+            AccountModifiedAt();
+            AddEvent(new BankAccountUpdated(ownerId, type, card, accountNumber));
+
+
+        }
+        public void UpdateMoneyBalanceSender(Money money)
+        {
+            if(AccountBalance.Currency != money.Currency)
+            {
+                throw new Exception();
+            }
+            AccountBalance.UpdateBalaceSender(money.AccountBalance);
+        }
+        public void UpdateMoneyBalanceReciver(Money money)
+        {
+            if (AccountBalance.Currency != money.Currency)
+            {
+                throw new Exception();
+            }
+            AccountBalance.UpdateBalaceReceiver(money.AccountBalance);
+        }
 
     }
 }
