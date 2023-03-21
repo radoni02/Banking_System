@@ -33,7 +33,6 @@ namespace Banking.Core.Domain.Entities
             AccountType type,
             BankingCard card,
             DateTime createdAt,
-            DateTime modifiedAt,
             AccountNumber accountNumber) : base(Guid.NewGuid())
         {
             OwnerId = ownerId;
@@ -41,7 +40,6 @@ namespace Banking.Core.Domain.Entities
             Type = type;
             Card = card;
             CreatedAt = createdAt;
-            ModifiedAt = modifiedAt;
             AccountNumber = accountNumber;
         }
 

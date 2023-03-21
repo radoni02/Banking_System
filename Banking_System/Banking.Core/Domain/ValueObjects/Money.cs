@@ -19,14 +19,14 @@ namespace Banking.Core.Domain.ValueObjects
 
         public Currency Currency { get; init; }
 
-        public Money Create(decimal accountBalance)
+        public static Money Create(decimal accountBalance,Currency currency)
         {
             
             if (accountBalance != 0)
             {
                 throw new Exception();
             }           
-            return new Money(accountBalance,Currency);
+            return new Money(accountBalance,currency);
         }
         public void UpdateBalaceSender(decimal amount)
         {

@@ -12,6 +12,7 @@ namespace Banking.Core.Domain.Repositories
         Task AddAsync(User user);
         Task UpdateAsync(User user);
         Task DeleteAsync(User user);
+        Task<bool> ExistByIdAsync(Guid id);
         Task<User> GetAsync(Guid id);
     }
 }

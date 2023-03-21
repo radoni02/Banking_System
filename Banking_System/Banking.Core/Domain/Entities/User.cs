@@ -65,6 +65,10 @@ namespace Banking.Core.Domain.Entities
             EmailAddress = emailAddress;
             CreatedAt = createdAt;
         }
+        public void SetFirstName(string firstName)
+        {
+            FirstName = firstName;
+        }
 
         public void SetLastName(string lastName)
         {
@@ -84,6 +88,15 @@ namespace Banking.Core.Domain.Entities
         public void UserModifiedAt()
         {
             ModifiedAt = DateTime.UtcNow;
+        }
+
+        public void UpdateUser(string firstName,string lastName, PhoneNumber phoneNumber, EmailAddress emailAddress)
+        {
+            SetFirstName(firstName);
+            SetLastName(lastName);
+            SetPhoneNumber(phoneNumber);
+            SetEmailAddress(emailAddress);
+            UserModifiedAt();
         }
 
         public void AddBankAccount(BankAccount account)

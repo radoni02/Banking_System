@@ -19,7 +19,7 @@ namespace Banking.Core.Domain.ValueObjects
 
         public string Value { get; }
 
-        public AccountNumber Create(string accountNumber)
+        public static AccountNumber Create(string accountNumber)
         {
             if (string.IsNullOrWhiteSpace(accountNumber))
             {
@@ -39,5 +39,10 @@ namespace Banking.Core.Domain.ValueObjects
         {
             yield return Value;
         }
+
+        public static implicit operator string(AccountNumber number)
+            =>number.Value;
+        public static implicit operator AccountNumber(string number)
+           => new(number);
     }
 }
