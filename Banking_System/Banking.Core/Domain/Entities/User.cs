@@ -123,6 +123,11 @@ namespace Banking.Core.Domain.Entities
             }
             return account;
         }
+        public void AddOwnerT(Guid acconutId,Guid ownerid)
+        {
+            var account = GetBankAccount(acconutId);
+            
+        }
 
     }
 }

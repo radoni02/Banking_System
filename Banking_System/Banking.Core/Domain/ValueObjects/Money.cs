@@ -36,5 +36,13 @@ namespace Banking.Core.Domain.ValueObjects
         {
             AccountBalance += amount;
         }
+        public void CheckCurrency(Currency currency)
+        {
+            if(this.Currency !=Currency)
+            {
+                throw new Exception();
+            }
+
+        }
     }
 }
