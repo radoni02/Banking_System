@@ -24,7 +24,8 @@ namespace Banking.Application.Commands.Handlers
         {
             var user = await _userRepository.GetAsync(command.ownerId);
             ArgumentNullException.ThrowIfNull(user);
-            var account =  _bankAccountFactory.CreatePersonalAcconut(command.type,command.card,DateTime.UtcNow);
+            var account =  _bankAccountFactory.CreatePersonalAccount(command.type,command.card,DateTime.UtcNow,command.ownerId);
+            account.AddOwnerToAccount(command.ownerId,command.type);
             ArgumentNullException.ThrowIfNull(account);
             user.AddBankAccount(account);
             await _userRepository.UpdateAsync(user);

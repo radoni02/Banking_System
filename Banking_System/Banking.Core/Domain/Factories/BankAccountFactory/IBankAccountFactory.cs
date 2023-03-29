@@ -11,6 +11,7 @@ namespace Banking.Core.Domain.Factories.BankAccountFactory
 {
     public interface IBankAccountFactory
     {
-        BankAccount CreatePersonalAcconut(AccountType type,BankingCard card, DateTime createdAt);
+        BankAccount CreatePersonalAccount(AccountType type,BankingCard card, DateTime createdAt, Guid ownerId);
+        BankAccount CreateCompanyAccount(AccountType type, BankingCard card, DateTime createdAt, Guid ownerId);
     }
 }

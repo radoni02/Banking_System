@@ -125,9 +125,17 @@ namespace Banking.Core.Domain.Entities
             money.UpdateBalaceReceiver(money.AccountBalance);
         }
 
-        public void AddOwnerToAccount(Guid ownerid)
+        public void AddOwnerToAccount(Guid ownerid, AccountType type)
         {
             var owner = CheckIfOwnerExists(ownerid);
+            if (_ownersId.Count is 1 && type is not AccountType.CompanyAccount)
+            {
+                throw new Exception();
+            }
+            if (_ownersId.Count >= 5 && type is AccountType.CompanyAccount)
+            {
+                throw new Exception();
+            }
             _ownersId.Add(owner);
 
         }
@@ -144,8 +152,16 @@ namespace Banking.Core.Domain.Entities
             }
             return ownerid;
         }
-        public void AddBalanceToAccount(Currency currency)
+        public void AddBalanceToAccount(Currency currency, AccountType type)
         {
+            if(_accountBalances.Count is 1 && type is not AccountType.ForeignExchangeAccount)
+            {
+                throw new Exception();
+            }
+            if(_accountBalances.Count >= Enum.GetValues(typeof(Currency)).Length && type is AccountType.ForeignExchangeAccount)
+            {
+                throw new Exception();
+            }
             var balance = CheckIfBalanceExists(currency);
             _accountBalances.Add(balance);
 
