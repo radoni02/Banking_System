@@ -25,7 +25,15 @@ namespace Banking.Application.Commands.Handlers
             ArgumentNullException.ThrowIfNull(user);
             foreach(var account in user.Accounts)
             {
-                await _bankAccountRepository.DeleteAsync(account);
+                if (account.Type is not Core.Domain.Consts.AccountType.CompanyAccount)
+                {
+                    await _bankAccountRepository.DeleteAsync(account);
+                }
+                else
+                {
+                    account.RemoveOwnerFromAccount(command.UserId);
+                }
+                
             }
             await _userRepository.DeleteAsync(user);
         }

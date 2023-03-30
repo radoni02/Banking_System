@@ -9,26 +9,26 @@ using System.Threading.Tasks;
 
 namespace Banking.Application.Commands.Handlers
 {
-    public class AddBankAcconutHandler : ICommandHandler<AddBankAcconut>
+    public class AddBankAccountHandler : ICommandHandler<AddBankAccount>
     {
         private readonly IBankAccountFactory _bankAccountFactory;
         private readonly IUserRepository _userRepository;
 
-        public AddBankAcconutHandler(IBankAccountFactory bankAccountFactory, IUserRepository userRepository)
+        public AddBankAccountHandler(IBankAccountFactory bankAccountFactory, IUserRepository userRepository)
         {
             _bankAccountFactory = bankAccountFactory;
             _userRepository = userRepository;
         }
 
-        public async Task HandleAsync(AddBankAcconut command, CancellationToken cancellationToken = new CancellationToken())
+        public async Task HandleAsync(AddBankAccount command, CancellationToken cancellationToken = new CancellationToken())
         {
             var user = await _userRepository.GetAsync(command.ownerId);
             ArgumentNullException.ThrowIfNull(user);
-            var account =  _bankAccountFactory.CreatePersonalAccount(command.type,command.card,DateTime.UtcNow,command.ownerId);
-            account.AddOwnerToAccount(command.ownerId,command.type);
+            var account =  _bankAccountFactory.CreateAccount(command.type,command.card,DateTime.UtcNow,command.ownerId);
             ArgumentNullException.ThrowIfNull(account);
             user.AddBankAccount(account);
             await _userRepository.UpdateAsync(user);
+            //should I also update BankAccountRepository here?
         }
     }
 }

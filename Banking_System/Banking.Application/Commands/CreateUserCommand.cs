@@ -9,7 +9,6 @@ using System.Threading.Tasks;
 
 namespace Banking.Application.Commands
 {
-    public record CreateUserCommand(Guid UserId,string FirstName, string LastName, Gender Gender, Pesel pesel, PhoneNumber PhoneNumber, EmailAddress EmailAddress) : ICommand
-    {
-    }
+    public record CreateUserCommand(Guid UserId,string FirstName, string LastName, Gender Gender, Pesel pesel, PhoneNumber PhoneNumber, EmailAddress EmailAddress) : ICommand;
+
 }

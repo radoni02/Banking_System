@@ -144,6 +144,10 @@ namespace Banking.Core.Domain.Entities
             var owner = CheckIfOwnerExists(ownerid);
             _ownersId.Remove(owner);
         }
+        public List<Guid> GetOwnersOfAccount()
+        {
+            return this._ownersId;
+        }
         private Guid CheckIfOwnerExists(Guid ownerid)
         {
             if (!_ownersId.Contains(ownerid))

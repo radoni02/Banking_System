@@ -7,6 +7,5 @@ using System.Threading.Tasks;
 
 namespace Banking.Application.Commands
 {
-    public record DeleteUserCommand(Guid UserId) : ICommand;
-
+    public record DeleteBankAccount(Guid OwnerId,Guid AccountId) :ICommand; 
 }

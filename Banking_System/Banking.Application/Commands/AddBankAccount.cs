@@ -9,7 +9,5 @@ using System.Threading.Tasks;
 
 namespace Banking.Application.Commands
 {
-    public record AddBankAcconut( Guid ownerId, BankingCard card,AccountType type) : ICommand;
-    
-    
+    public record AddBankAccount( Guid ownerId, BankingCard card,AccountType type) : ICommand;
 }
