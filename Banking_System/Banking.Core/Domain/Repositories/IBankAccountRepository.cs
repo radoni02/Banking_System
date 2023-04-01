@@ -1,4 +1,5 @@
 ﻿using Banking.Core.Domain.Entities;
+using Banking.Core.Domain.ValueObjects;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,5 +14,6 @@ namespace Banking.Core.Domain.Repositories
         Task UpdateAsync(BankAccount account);
         Task DeleteAsync(BankAccount account);
         Task<BankAccount> GetAsync(Guid id);
+        Task<BankAccount> GetByAccountNumberAsync(AccountNumber accountNumber);
     }
 }

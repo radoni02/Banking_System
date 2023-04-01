@@ -1,5 +1,4 @@
-﻿using Banking.Core.Domain.Consts;
-using Banking.Core.Domain.ValueObjects;
+﻿using Banking.Application.Dto;
 using Convey.CQRS.Commands;
 using System;
 using System.Collections.Generic;
@@ -9,5 +8,7 @@ using System.Threading.Tasks;
 
 namespace Banking.Application.Commands
 {
-    public record AddBankAccount( Guid ownerId, BankCard card,AccountType type) : ICommand;
+    public record MakeTransferCommand(Guid userId,Guid accountId, BankTransferDto transferdata) : ICommand;
+    
+    
 }

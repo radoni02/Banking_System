@@ -36,6 +36,7 @@ namespace Banking.Application.Commands.Handlers
                 await _bankAccountRepository.UpdateAsync(bankAccount);
             }
             await _userRepository.UpdateAsync(user);
+            //edit//this method should work only if user have more then 1 bankAccount, we dont allow user to have 0 bankAccount
 
         }
     }

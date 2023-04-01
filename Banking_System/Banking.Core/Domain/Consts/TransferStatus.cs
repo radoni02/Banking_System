@@ -10,6 +10,7 @@ namespace Banking.Core.Domain.Consts
     {
         Pending = 0,
         Successful = 1,
-        Failed = 2
+        Failed = 2,
+        Created =3
     }
 }

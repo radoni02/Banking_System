@@ -21,7 +21,6 @@ namespace Banking.Core.Domain.ValueObjects
 
         public static Money Create(decimal accountBalance,Currency currency)
         {
-            
             if (accountBalance != 0)
             {
                 throw new Exception();
@@ -36,9 +35,9 @@ namespace Banking.Core.Domain.ValueObjects
         {
             AccountBalance += amount;
         }
-        public void CheckCurrency(Currency currency)
+        public void CheckCurrency(Currency currency) //check this method??Is that necessary
         {
-            if(this.Currency !=Currency)
+            if(this.Currency != Currency)
             {
                 throw new Exception();
             }

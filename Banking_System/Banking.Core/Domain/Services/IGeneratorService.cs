@@ -1,4 +1,5 @@
-﻿using Banking.Core.Domain.ValueObjects;
+﻿using Banking.Core.Domain.Consts;
+using Banking.Core.Domain.ValueObjects;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,5 +11,6 @@ namespace Banking.Core.Domain.Services
     public interface IGeneratorService
     {
         AccountNumber AccountNumberGenerator();
+        BankingCard BankingCardGenerator(BankCard card);
     }
 }

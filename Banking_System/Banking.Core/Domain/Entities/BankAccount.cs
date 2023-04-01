@@ -87,20 +87,21 @@ namespace Banking.Core.Domain.Entities
             _transfers.Add(banktransfer);
             AddEvent(new BankTransferAdded(this, banktransfer));
         }
-       
-        public void CheckIfSenderHaveEnoughMoney(decimal amount,BankCard type,TransferStatus status,Money money)
+
+        public TransferStatus CheckIfSenderHaveEnoughMoney(decimal amount,BankCard bankCardType,TransferStatus status,Money money)
         {
             //should be made on Result.Success etc.
-            if (money.AccountBalance - amount < 0 && type == BankCard.DebitCard)
+            if (money.AccountBalance - amount < 0 && bankCardType == BankCard.DebitCard)
             {
                 status = TransferStatus.Failed;
                //throw new Exception(); //here insted of throwing exception maybe status.Faild;
             }
-            if (money.AccountBalance - amount < -500 && type == BankCard.CreditCard) //assuming that on credit card is possible to be only -500 
+            if (money.AccountBalance - amount < -500 && bankCardType == BankCard.CreditCard) //assuming that on credit card is possible to be only -500 
             {
                 status = TransferStatus.Failed;
                 //throw new Exception();
             }
+            return status;
 
         }
 
@@ -156,6 +157,7 @@ namespace Banking.Core.Domain.Entities
             }
             return ownerid;
         }
+
         public void AddBalanceToAccount(Currency currency, AccountType type)
         {
             if(_accountBalances.Count is 1 && type is not AccountType.ForeignExchangeAccount)

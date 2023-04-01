@@ -11,40 +11,31 @@ namespace Banking.Core.Domain.ValueObjects
 {
     public sealed class BankingCard
     {
-        public const int ValidLengthofCardNumber = 16;
-        public const int ValidLengthOfCVV = 3;
-        public const int MaxLengthOfHolderName = 50;
-
-        private BankingCard(string cardNumber, string cardHolderName, BankCard type, DateTime cardValidityDate, string cVV)
-        {
-            CardNumber = cardNumber;
-            CardHolderName = cardHolderName;
-            Type = type;
-            CardValidityDate = cardValidityDate;
-            CVV = cVV;
-        }
+        private const int ValidLengthofCardNumber = 16;
+        private const int ValidLengthOfCVV = 3;
+        private const int MaxLengthOfHolderName = 50;
 
         public string CardNumber { get; }
         public string CardHolderName { get; }
-        public BankCard Type { get; set; }
+        public BankCard Type { get;private set; }
 
         public DateTime CardValidityDate { get; }
 
         public string CVV { get; }
-        public BankingCard CreateDebitCard(string cardNumber, string cardHolderName, BankCard type, DateTime cardValidityDate, string cVV)
+        public static BankingCard CreateDebitCard(string cardNumber, string cardHolderName, BankCard type, DateTime cardValidityDate, string cVV)
         {
             type = BankCard.DebitCard;
-            var card = Create(cardNumber, cardHolderName, type, cardValidityDate, cVV);
+            var card =new BankingCard(cardNumber, cardHolderName, type, cardValidityDate, cVV);
             if(card is null)
             {
                 throw new Exception();
             }
             return card;
         }
-        public BankingCard CreateCreditCard(string cardNumber, string cardHolderName, BankCard type, DateTime cardValidityDate, string cVV)
+        public static BankingCard CreateCreditCard(string cardNumber, string cardHolderName, BankCard type, DateTime cardValidityDate, string cVV)
         {
             type = BankCard.CreditCard;
-            var card = Create(cardNumber, cardHolderName, type, cardValidityDate, cVV);
+            var card =new BankingCard(cardNumber, cardHolderName, type, cardValidityDate, cVV);
             if (card is null)
             {
                 throw new Exception();
@@ -52,13 +43,13 @@ namespace Banking.Core.Domain.ValueObjects
             return card;
         }
 
-        private BankingCard Create(string cardNumber, string cardHolderName, BankCard type, DateTime cardValidityDate, string cVV)
+        private BankingCard(string cardNumber, string cardHolderName, BankCard type, DateTime cardValidityDate, string cVV)
         {
-            if(string.IsNullOrWhiteSpace(CVV) || string.IsNullOrWhiteSpace(CardNumber) || string.IsNullOrWhiteSpace(CardHolderName))
+            if (string.IsNullOrWhiteSpace(CVV) || string.IsNullOrWhiteSpace(CardNumber) || string.IsNullOrWhiteSpace(CardHolderName))
             {
                 throw new Exception();
             }
-            if(cardNumber.Length != ValidLengthofCardNumber)
+            if (cardNumber.Length != ValidLengthofCardNumber)
             {
                 throw new Exception();
             }
@@ -72,13 +63,17 @@ namespace Banking.Core.Domain.ValueObjects
             }
             if (!Regex.Match(cVV, @"^\d+$").Success)
             {
-                throw new InvalidCharactersException(cVV); 
+                throw new InvalidCharactersException(cVV);
             }
             if (!Regex.Match(cardNumber, @"^\d+$").Success)
             {
                 throw new InvalidCharactersException(cardNumber);
             }
-            return new BankingCard(cardNumber, cardHolderName, type, cardValidityDate, cVV);
+            CardNumber = cardNumber;
+            CardHolderName = cardHolderName;
+            Type = type;
+            CardValidityDate = cardValidityDate;
+            CVV = cVV;
 
         }
     }

@@ -22,12 +22,16 @@ namespace Banking.Core.Domain.Factories.BankAccountFactory
         private BankAccount Create(AccountType type, BankingCard card, DateTime createdAt, AccountNumber accountNumber)
             => new(type, card, createdAt, accountNumber);
 
-        public BankAccount CreateAccount(AccountType type ,BankingCard card, DateTime createdAt,Guid ownerId)
+        public BankAccount CreateAccount(AccountType accountType ,BankCard card, DateTime createdAt,Guid ownerId)
         {
             var accountNumber = AccountNumber.Create(_generatorService.AccountNumberGenerator());
-            var bankAccount = Create(type, card, createdAt, accountNumber);
-            bankAccount.AddOwnerToAccount(ownerId,type);
-            bankAccount.AddBalanceToAccount(Currency.PLN,type);
+            var bankingCard = _generatorService.BankingCardGenerator(card);
+            var cardType = card is BankCard.CreditCard ?
+                BankingCard.CreateCreditCard(bankingCard.CardNumber,bankingCard.CardHolderName,card,bankingCard.CardValidityDate,bankingCard.CVV)
+                : BankingCard.CreateDebitCard(bankingCard.CardNumber, bankingCard.CardHolderName, card, bankingCard.CardValidityDate, bankingCard.CVV);
+            var bankAccount = Create(accountType, cardType, createdAt, accountNumber);
+            bankAccount.AddOwnerToAccount(ownerId,accountType);
+            bankAccount.AddBalanceToAccount(Currency.PLN,accountType);
             return bankAccount;
         }
      
