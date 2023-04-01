@@ -44,25 +44,15 @@ namespace Banking.Application.Commands.Handlers
                 status = TransferStatus.Failed;
                 throw new Exception();
             }
-            var isFound = false;
-            foreach(var balance in reciverAccount.AccountBalances)
-            {
-                if(balance.Currency == command.transferdata.Currency)
-                {
-                    isFound = true;
-                    senderAccount.UpdateMoneyBalanceReciver(balance);
-                    status = TransferStatus.Successful;
-                    break;
-                }
-            }
-            if(isFound is false)
+            var isFound = reciverAccount.CurrencyChecking(command.transferdata.Currency,status);
+            if (isFound is false)
             {
                 //call some external service to change currency and updatebalanceReciver, for now it will be exception //currency conversion
                 throw new Exception();
             }
             reciverAccount.AddTransfer(bankTransfer);
-            bankTransfer.GetProperAmountForSender(bankTransfer.Amount);
-            senderAccount.AddTransfer(bankTransfer);
+            var senderBankTransfer = bankTransfer.GetTransferForSender(bankTransfer);
+            senderAccount.AddTransfer(senderBankTransfer);
 
             await _bankAccountRepository.UpdateAsync(senderAccount);
             await _bankAccountRepository.UpdateAsync(reciverAccount);

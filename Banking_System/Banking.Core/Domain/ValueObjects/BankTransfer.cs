@@ -53,9 +53,15 @@ namespace Banking.Core.Domain.ValueObjects
                 Status = status
             };
         }
-        public decimal GetProperAmountForSender(decimal amount)
+        public BankTransfer GetTransferForSender(BankTransfer transfer)
         {
-            return -amount;
+            return new BankTransfer(transfer.IsConstant,
+                transfer.Title,
+                -transfer.Amount,
+                transfer.ReceiverAdressAndData,
+                transfer.AccountNumber,
+                transfer.Currency);
         }
+
     }
 }

@@ -87,6 +87,21 @@ namespace Banking.Core.Domain.Entities
             _transfers.Add(banktransfer);
             AddEvent(new BankTransferAdded(this, banktransfer));
         }
+        public bool CurrencyChecking(Currency currency,TransferStatus status)
+        {
+            var isFound = false;
+            foreach (var balance in _accountBalances)
+            {
+                if (balance.Currency == currency)
+                {
+                    isFound = true;
+                    UpdateMoneyBalanceReciver(balance);
+                    status = TransferStatus.Successful;
+                    break;
+                }
+            }
+            return isFound;
+        }
 
         public TransferStatus CheckIfSenderHaveEnoughMoney(decimal amount,BankCard bankCardType,TransferStatus status,Money money)
         {
