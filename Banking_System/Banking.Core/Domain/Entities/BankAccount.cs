@@ -87,20 +87,16 @@ namespace Banking.Core.Domain.Entities
             _transfers.Add(banktransfer);
             AddEvent(new BankTransferAdded(this, banktransfer));
         }
-        public bool CurrencyChecking(Currency currency,TransferStatus status)
+        public TransferStatus CurrencyChecking(Currency currency,TransferStatus status)
         {
-            var isFound = false;
-            foreach (var balance in _accountBalances)
+            var balance = _accountBalances.FirstOrDefault(x => x.Currency == currency);
+            if(balance is null)
             {
-                if (balance.Currency == currency)
-                {
-                    isFound = true;
-                    UpdateMoneyBalanceReciver(balance);
-                    status = TransferStatus.Successful;
-                    break;
-                }
+                return status;
             }
-            return isFound;
+            UpdateMoneyBalanceReciver(balance);
+            status = TransferStatus.Successful;
+            return status;
         }
 
         public TransferStatus CheckIfSenderHaveEnoughMoney(decimal amount,BankCard bankCardType,TransferStatus status,Money money)

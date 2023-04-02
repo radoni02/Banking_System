@@ -26,10 +26,15 @@ namespace Banking.Application.Commands.Handlers
             var sender = await _userRepository.GetAsync(command.userId);
             ArgumentNullException.ThrowIfNull(sender);
             var senderAccount = sender.Accounts.FirstOrDefault(x => x.Id == command.accountId);
+            var properSenderBalance = senderAccount.AccountBalances.FirstOrDefault(x => x.Currency == command.transferdata.Currency);
+            if(properSenderBalance is null)
+            {
+                throw new Exception();
+            }
             var status = senderAccount.CheckIfSenderHaveEnoughMoney(command.transferdata.Amount,
                                                                 senderAccount.Card.Type,
                                                                 TransferStatus.Created,
-                                                                senderAccount.AccountBalances.FirstOrDefault());//we assume that sender have one balance
+                                                                properSenderBalance);
             var bankTransfer = BankTransfer.Create(command.transferdata.Title,
                                                     command.transferdata.Amount,
                                                     command.transferdata.ReceiverAdressAndData,
@@ -37,15 +42,15 @@ namespace Banking.Application.Commands.Handlers
                                                     command.transferdata.IsConstant,
                                                     command.transferdata.AccountNumber,
                                                     Currency.PLN);
-            senderAccount.UpdateMoneyBalanceSender(senderAccount.AccountBalances.FirstOrDefault());
+            senderAccount.UpdateMoneyBalanceSender(properSenderBalance);
             var reciverAccount = await _bankAccountRepository.GetByAccountNumberAsync(command.transferdata.AccountNumber);
             if(reciverAccount is null)
             {
                 status = TransferStatus.Failed;
                 throw new Exception();
             }
-            var isFound = reciverAccount.CurrencyChecking(command.transferdata.Currency,status);
-            if (isFound is false)
+            status = reciverAccount.CurrencyChecking(command.transferdata.Currency,status);
+            if (status is not TransferStatus.Successful)
             {
                 //call some external service to change currency and updatebalanceReciver, for now it will be exception //currency conversion
                 throw new Exception();
