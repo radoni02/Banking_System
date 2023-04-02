@@ -87,14 +87,14 @@ namespace Banking.Core.Domain.Entities
             _transfers.Add(banktransfer);
             AddEvent(new BankTransferAdded(this, banktransfer));
         }
-        public TransferStatus CurrencyChecking(Currency currency,TransferStatus status)
+        public TransferStatus CurrencyChecking(Currency currency,TransferStatus status,decimal amount)
         {
             var balance = _accountBalances.FirstOrDefault(x => x.Currency == currency);
             if(balance is null)
             {
                 return status;
             }
-            UpdateMoneyBalanceReciver(balance);
+            UpdateMoneyBalanceReciver(balance,amount);
             status = TransferStatus.Successful;
             return status;
         }
@@ -126,15 +126,15 @@ namespace Banking.Core.Domain.Entities
 
 
         }
-        public void UpdateMoneyBalanceSender(Money money)
+        public void UpdateMoneyBalanceSender(Money money,decimal amount)
         {
             money.CheckCurrency(money.Currency);
-            money.UpdateBalaceSender(money.AccountBalance);
+            money.UpdateBalaceSender(amount);
         }
-        public void UpdateMoneyBalanceReciver(Money money)
+        public void UpdateMoneyBalanceReciver(Money money,decimal amount)
         {
             money.CheckCurrency(money.Currency);
-            money.UpdateBalaceReceiver(money.AccountBalance);
+            money.UpdateBalaceReceiver(amount);
         }
 
         public void AddOwnerToAccount(Guid ownerid, AccountType type)

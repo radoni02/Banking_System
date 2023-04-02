@@ -37,7 +37,7 @@ namespace Banking.Core.Domain.ValueObjects
         }
         public void CheckCurrency(Currency currency) //check this method??Is that necessary
         {
-            if(this.Currency != Currency)
+            if(this.Currency != currency)
             {
                 throw new Exception();
             }

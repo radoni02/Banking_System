@@ -1,4 +1,5 @@
-﻿using Banking.Core.Domain.Consts;
+﻿using Banking.Application.Services;
+using Banking.Core.Domain.Consts;
 using Banking.Core.Domain.Repositories;
 using Banking.Core.Domain.ValueObjects;
 using Convey.CQRS.Commands;
@@ -14,11 +15,15 @@ namespace Banking.Application.Commands.Handlers
     {
         private readonly IUserRepository _userRepository;
         private readonly IBankAccountRepository _bankAccountRepository;
+        private readonly ICurrencyChanger _currencyChanger;
 
-        public MakeTransferCommandHandler(IUserRepository userRepository, IBankAccountRepository bankAccountRepository)
+        public MakeTransferCommandHandler(IUserRepository userRepository,
+            IBankAccountRepository bankAccountRepository,
+            ICurrencyChanger currencyChanger)
         {
             _userRepository = userRepository;
             _bankAccountRepository = bankAccountRepository;
+            _currencyChanger = currencyChanger;
         }
 
         public async Task HandleAsync(MakeTransferCommand command, CancellationToken cancellationToken = new CancellationToken())
@@ -42,18 +47,25 @@ namespace Banking.Application.Commands.Handlers
                                                     command.transferdata.IsConstant,
                                                     command.transferdata.AccountNumber,
                                                     Currency.PLN);
-            senderAccount.UpdateMoneyBalanceSender(properSenderBalance);
+            senderAccount.UpdateMoneyBalanceSender(properSenderBalance,command.transferdata.Amount);
             var reciverAccount = await _bankAccountRepository.GetByAccountNumberAsync(command.transferdata.AccountNumber);
             if(reciverAccount is null)
             {
                 status = TransferStatus.Failed;
                 throw new Exception();
             }
-            status = reciverAccount.CurrencyChecking(command.transferdata.Currency,status);
+            status = reciverAccount.CurrencyChecking(command.transferdata.Currency,status,command.transferdata.Amount);
             if (status is not TransferStatus.Successful)
             {
-                //call some external service to change currency and updatebalanceReciver, for now it will be exception //currency conversion
-                throw new Exception();
+                //we assume that default currency is PLN
+                var amountInPln = _currencyChanger.ChangeCurrency(properSenderBalance.Currency,command.transferdata.Amount);
+                var properReciverBalance = reciverAccount.AccountBalances.FirstOrDefault(x => x.Currency == Currency.PLN);
+                if(properReciverBalance is null)
+                {
+                    throw new Exception();
+                }
+                reciverAccount.UpdateMoneyBalanceReciver(properReciverBalance,amountInPln);
+                status = TransferStatus.Successful;
             }
             reciverAccount.AddTransfer(bankTransfer);
             var senderBankTransfer = bankTransfer.GetTransferForSender(bankTransfer);
