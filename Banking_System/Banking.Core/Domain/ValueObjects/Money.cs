@@ -1,4 +1,5 @@
 ﻿using Banking.Core.Domain.Consts;
+using Banking.Core.Domain.Exceptions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,7 +24,7 @@ namespace Banking.Core.Domain.ValueObjects
         {
             if (accountBalance != 0)
             {
-                throw new Exception();
+                throw new DefaultAccountBalanceIsNotZeroException();
             }           
             return new Money(accountBalance,currency);
         }

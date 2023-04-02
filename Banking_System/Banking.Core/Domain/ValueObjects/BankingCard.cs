@@ -28,7 +28,7 @@ namespace Banking.Core.Domain.ValueObjects
             var card =new BankingCard(cardNumber, cardHolderName, type, cardValidityDate, cVV);
             if(card is null)
             {
-                throw new Exception();
+                throw new UnableToCreateBankingCardException();
             }
             return card;
         }
@@ -38,7 +38,7 @@ namespace Banking.Core.Domain.ValueObjects
             var card =new BankingCard(cardNumber, cardHolderName, type, cardValidityDate, cVV);
             if (card is null)
             {
-                throw new Exception();
+                throw new UnableToCreateBankingCardException();
             }
             return card;
         }
@@ -47,19 +47,19 @@ namespace Banking.Core.Domain.ValueObjects
         {
             if (string.IsNullOrWhiteSpace(CVV) || string.IsNullOrWhiteSpace(CardNumber) || string.IsNullOrWhiteSpace(CardHolderName))
             {
-                throw new Exception();
+                throw new EmptyValueException($"{cVV} or {cardNumber} or {cardHolderName}");
             }
             if (cardNumber.Length != ValidLengthofCardNumber)
             {
-                throw new Exception();
+                throw new InvalidLengthException(cardNumber);
             }
             if (cardHolderName.Length > MaxLengthOfHolderName)
             {
-                throw new Exception();
+                throw new InvalidLengthException(cardHolderName);
             }
             if (cVV.Length != ValidLengthOfCVV)
             {
-                throw new Exception();
+                throw new InvalidLengthException(cVV);
             }
             if (!Regex.Match(cVV, @"^\d+$").Success)
             {

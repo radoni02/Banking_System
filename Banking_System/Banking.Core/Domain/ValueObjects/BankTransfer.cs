@@ -1,4 +1,5 @@
 ﻿using Banking.Core.Domain.Consts;
+using Banking.Core.Domain.Exceptions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -34,15 +35,20 @@ namespace Banking.Core.Domain.ValueObjects
         { 
 
             //zastanowic sie jak zrobic ta metode static zeby moc uwtorzyc obiekt trasfer w handlerku
-           if(string.IsNullOrWhiteSpace(title)||string.IsNullOrWhiteSpace(receiverAdressAndData))
+           if(string.IsNullOrWhiteSpace(title))
            {
                 status = TransferStatus.Failed;
-                throw new Exception();
+                throw new EmptyValueException(title);
+           }
+           if(string.IsNullOrWhiteSpace(receiverAdressAndData))
+           {
+                status = TransferStatus.Failed;
+                throw new EmptyValueException(receiverAdressAndData);
            }
            if(amount <= decimal.Zero)
            {
                 status = TransferStatus.Failed;
-                throw new Exception();
+                throw new TransferAmountCannotBeLessThenZeroException();
            }
            return new BankTransfer( isConstant, title,amount,receiverAdressAndData, accountNumber, currency);
         }

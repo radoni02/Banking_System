@@ -81,7 +81,7 @@ namespace Banking.Core.Domain.Entities
         {
             if(banktransfer.Status!=TransferStatus.Successful)
             {
-                throw new Exception(); //should I throw exception here? maybe unitOFWork pattern
+                throw new TransferStatusNotValidException();
 
             }
             _transfers.Add(banktransfer);
@@ -142,11 +142,11 @@ namespace Banking.Core.Domain.Entities
             var owner = CheckIfOwnerExists(ownerid);
             if (_ownersId.Count is 1 && type is not AccountType.CompanyAccount)
             {
-                throw new Exception();
+                throw new TooManyOwnersException(1);
             }
             if (_ownersId.Count >= 5 && type is AccountType.CompanyAccount)
             {
-                throw new Exception();
+                throw new TooManyOwnersException(5);
             }
             _ownersId.Add(owner);
 
@@ -164,7 +164,7 @@ namespace Banking.Core.Domain.Entities
         {
             if (!_ownersId.Contains(ownerid))
             {
-                throw new Exception();
+                throw new OwnerNotFoundException(ownerid);
             }
             return ownerid;
         }
@@ -173,11 +173,11 @@ namespace Banking.Core.Domain.Entities
         {
             if(_accountBalances.Count is 1 && type is not AccountType.ForeignExchangeAccount)
             {
-                throw new Exception();
+                throw new MoreThenOneBalanceAddedException();
             }
             if(_accountBalances.Count >= Enum.GetValues(typeof(Currency)).Length && type is AccountType.ForeignExchangeAccount)
             {
-                throw new Exception();
+                throw new MoreBalancesThenAvailableCurrenciesException();
             }
             var balance = CheckIfBalanceExists(currency);
             _accountBalances.Add(balance);
@@ -194,7 +194,7 @@ namespace Banking.Core.Domain.Entities
             var currencyCheck = _accountBalances.FirstOrDefault(x => x.Currency == currency);
             if (currencyCheck is not null)
             {
-                throw new Exception(); //Currency already exists
+                throw new CurrencyAlreadyExistsException(currency);
             }
             var balance = Money.Create(decimal.Zero, currency);
             return balance;
