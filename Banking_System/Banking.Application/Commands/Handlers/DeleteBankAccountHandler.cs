@@ -1,4 +1,5 @@
-﻿using Banking.Core.Domain.Repositories;
+﻿using Banking.Application.Exceptions;
+using Banking.Core.Domain.Repositories;
 using Convey.CQRS.Commands;
 using System;
 using System.Collections.Generic;
@@ -22,10 +23,16 @@ namespace Banking.Application.Commands.Handlers
         public async Task HandleAsync(DeleteBankAccount command, CancellationToken cancellationToken = new CancellationToken())
         {
             var user = await _userRepository.GetAsync(command.OwnerId);
-            ArgumentNullException.ThrowIfNull(user);
+            if(user is null)
+            {
+                throw new UserNotFoundException();
+            }
             user.RemoveBankAccount(command.AccountId);
             var bankAccount = await _bankAccountRepository.GetAsync(command.AccountId);
-            ArgumentNullException.ThrowIfNull(bankAccount);
+            if(bankAccount is null)
+            {
+                throw new AccountNotFoundException();
+            }
             if(bankAccount.Type is not Core.Domain.Consts.AccountType.CompanyAccount)
             {
                 await _bankAccountRepository.DeleteAsync(bankAccount);

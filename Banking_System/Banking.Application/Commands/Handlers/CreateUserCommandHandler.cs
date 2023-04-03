@@ -1,4 +1,5 @@
-﻿using Banking.Core.Domain.Factories.UserFactory;
+﻿using Banking.Application.Exceptions;
+using Banking.Core.Domain.Factories.UserFactory;
 using Banking.Core.Domain.Repositories;
 using Convey.CQRS.Commands;
 using System;
@@ -25,7 +26,7 @@ namespace Banking.Application.Commands.Handlers
             var (UserId,FirstName, LastName, Gender, Pesel, PhoneNumber, EmailAddress) = command;
             if(await _userRepository.ExistByIdAsync(UserId))
             {
-                throw new Exception();
+                throw new UserIdAlreadyTakenException();
             }
             var user = _userFactory.Create(FirstName, LastName, Gender, Pesel, PhoneNumber, EmailAddress);
             await _userRepository.AddAsync(user);

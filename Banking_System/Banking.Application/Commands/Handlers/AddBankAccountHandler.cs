@@ -1,4 +1,5 @@
-﻿using Banking.Core.Domain.Factories.BankAccountFactory;
+﻿using Banking.Application.Exceptions;
+using Banking.Core.Domain.Factories.BankAccountFactory;
 using Banking.Core.Domain.Repositories;
 using Convey.CQRS.Commands;
 using System;
@@ -23,9 +24,15 @@ namespace Banking.Application.Commands.Handlers
         public async Task HandleAsync(AddBankAccount command, CancellationToken cancellationToken = new CancellationToken())
         {
             var user = await _userRepository.GetAsync(command.ownerId);
-            ArgumentNullException.ThrowIfNull(user);
+            if(user is null)
+            {
+                throw new UserNotFoundException();
+            }
             var account =  _bankAccountFactory.CreateAccount(command.type,command.card,DateTime.UtcNow,command.ownerId);
-            ArgumentNullException.ThrowIfNull(account);
+            if(account is null)
+            {
+                throw new AccountNotFoundException();
+            }
             user.AddBankAccount(account);
             await _userRepository.UpdateAsync(user);
             //should I also update BankAccountRepository here?

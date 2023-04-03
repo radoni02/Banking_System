@@ -1,4 +1,5 @@
-﻿using Banking.Application.Services;
+﻿using Banking.Application.Exceptions;
+using Banking.Application.Services;
 using Banking.Core.Domain.Consts;
 using Banking.Core.Domain.Repositories;
 using Banking.Core.Domain.ValueObjects;
@@ -29,12 +30,19 @@ namespace Banking.Application.Commands.Handlers
         public async Task HandleAsync(MakeTransferCommand command, CancellationToken cancellationToken = new CancellationToken())
         {
             var sender = await _userRepository.GetAsync(command.userId);
-            ArgumentNullException.ThrowIfNull(sender);
+            if(sender is null)
+            {
+                throw new UserNotFoundException();
+            }
             var senderAccount = sender.Accounts.FirstOrDefault(x => x.Id == command.accountId);
+            if(senderAccount is null)
+            {
+                throw new AccountNotFoundException();
+            }
             var properSenderBalance = senderAccount.AccountBalances.FirstOrDefault(x => x.Currency == command.transferdata.Currency);
             if(properSenderBalance is null)
             {
-                throw new Exception();
+                throw new SenderBalanceNotFoundException(command.transferdata.Currency);
             }
             var status = senderAccount.CheckIfSenderHaveEnoughMoney(command.transferdata.Amount,
                                                                 senderAccount.Card.Type,
@@ -52,7 +60,7 @@ namespace Banking.Application.Commands.Handlers
             if(reciverAccount is null)
             {
                 status = TransferStatus.Failed;
-                throw new Exception();
+                throw new ReciverAccountNotFoundException();
             }
             status = reciverAccount.CurrencyChecking(command.transferdata.Currency,status,command.transferdata.Amount);
             if (status is not TransferStatus.Successful)
@@ -62,7 +70,7 @@ namespace Banking.Application.Commands.Handlers
                 var properReciverBalance = reciverAccount.AccountBalances.FirstOrDefault(x => x.Currency == Currency.PLN);
                 if(properReciverBalance is null)
                 {
-                    throw new Exception();
+                    throw new ReciverBalanceNotFoundException();
                 }
                 reciverAccount.UpdateMoneyBalanceReciver(properReciverBalance,amountInPln);
                 status = TransferStatus.Successful;

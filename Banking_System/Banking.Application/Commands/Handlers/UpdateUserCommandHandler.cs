@@ -1,4 +1,5 @@
-﻿using Banking.Core.Domain.Repositories;
+﻿using Banking.Application.Exceptions;
+using Banking.Core.Domain.Repositories;
 using Convey.CQRS.Commands;
 using System;
 using System.Collections.Generic;
@@ -21,7 +22,10 @@ namespace Banking.Application.Commands.Handlers
         {
             var (UserId, FirstName, LastName, PhoneNumber, EmailAddress) = command;
             var user = await _userRepository.GetAsync(UserId);
-            ArgumentNullException.ThrowIfNull(user);
+            if(user is null)
+            {
+                throw new UserNotFoundException();
+            }
             user.UpdateUser(FirstName,LastName,PhoneNumber,EmailAddress);
             await _userRepository.UpdateAsync(user);
         }
