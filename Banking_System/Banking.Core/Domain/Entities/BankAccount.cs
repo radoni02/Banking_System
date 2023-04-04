@@ -96,6 +96,7 @@ namespace Banking.Core.Domain.Entities
             }
             UpdateMoneyBalanceReciver(balance,amount);
             status = TransferStatus.Successful;
+            AddEvent(new CurrencyChecked(this, currency));
             return status;
         }
 
@@ -130,11 +131,13 @@ namespace Banking.Core.Domain.Entities
         {
             money.CheckCurrency(money.Currency);
             money.UpdateBalaceSender(amount);
+            AddEvent(new SenderBalanceUpdated(this, money));
         }
         public void UpdateMoneyBalanceReciver(Money money,decimal amount)
         {
             money.CheckCurrency(money.Currency);
             money.UpdateBalaceReceiver(amount);
+            AddEvent(new ReciverBalanceUpdated(this, money));
         }
 
         public void AddOwnerToAccount(Guid ownerid, AccountType type)
@@ -149,12 +152,14 @@ namespace Banking.Core.Domain.Entities
                 throw new TooManyOwnersException(5);
             }
             _ownersId.Add(owner);
+            AddEvent(new OwnerAdded(this, ownerid));
 
         }
         public void RemoveOwnerFromAccount(Guid ownerid)
         {
             var owner = CheckIfOwnerExists(ownerid);
             _ownersId.Remove(owner);
+            AddEvent(new OwnerRemoved(this, ownerid));
         }
         public List<Guid> GetOwnersOfAccount()
         {
@@ -181,12 +186,14 @@ namespace Banking.Core.Domain.Entities
             }
             var balance = CheckIfBalanceExists(currency);
             _accountBalances.Add(balance);
+            AddEvent(new BalanceAdded(this, balance));
 
         }
         public void RemoveBalanceFromAccount(Currency currency)
         {
             var balance = CheckIfBalanceExists(currency);
             _accountBalances.Remove(balance);
+            AddEvent(new BalanceRemoved(this, balance));
         }
 
         private Money CheckIfBalanceExists(Currency currency)

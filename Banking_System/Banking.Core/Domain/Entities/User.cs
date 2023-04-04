@@ -97,6 +97,7 @@ namespace Banking.Core.Domain.Entities
             SetPhoneNumber(phoneNumber);
             SetEmailAddress(emailAddress);
             UserModifiedAt();
+            AddEvent(new UserUpdated(this));
         }
 
         public void AddBankAccount(BankAccount account)
