@@ -24,7 +24,7 @@ namespace Banking.Application.Commands.Handlers
             var user = await _userRepository.GetAsync(UserId);
             if(user is null)
             {
-                throw new UserNotFoundException();
+                throw new UserNotFoundException(UserId);
             }
             user.UpdateUser(FirstName,LastName,PhoneNumber,EmailAddress);
             await _userRepository.UpdateAsync(user);

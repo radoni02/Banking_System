@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Banking.Application.Commands
 {
-    public record MakeTransferCommand(Guid userId,Guid accountId, BankTransferDto transferdata) : ICommand;
+    public record MakeTransferCommand(Guid UserId,Guid AccountId, BankTransferDto Transferdata) : ICommand;
     
     
 }

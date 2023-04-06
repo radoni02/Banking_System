@@ -142,7 +142,7 @@ namespace Banking.Core.Domain.Entities
 
         public void AddOwnerToAccount(Guid ownerid, AccountType type)
         {
-            var owner = CheckIfOwnerExists(ownerid);
+            //var owner = CheckIfOwnerExists(ownerid);
             if (_ownersId.Count is 1 && type is not AccountType.CompanyAccount)
             {
                 throw new TooManyOwnersException(1);
@@ -151,7 +151,7 @@ namespace Banking.Core.Domain.Entities
             {
                 throw new TooManyOwnersException(5);
             }
-            _ownersId.Add(owner);
+            _ownersId.Add(ownerid);
             AddEvent(new OwnerAdded(this, ownerid));
 
         }

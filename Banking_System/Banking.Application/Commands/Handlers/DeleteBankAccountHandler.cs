@@ -25,7 +25,7 @@ namespace Banking.Application.Commands.Handlers
             var user = await _userRepository.GetAsync(command.OwnerId);
             if(user is null)
             {
-                throw new UserNotFoundException();
+                throw new UserNotFoundException(command.OwnerId);
             }
             user.RemoveBankAccount(command.AccountId);
             var bankAccount = await _bankAccountRepository.GetAsync(command.AccountId);

@@ -9,7 +9,7 @@ namespace Banking.Application.Exceptions
 {
     public sealed class UserNotFoundException : ProjectException
     {
-        internal UserNotFoundException() : base("User not found.",HttpStatusCode.NotFound)
+        internal UserNotFoundException(Guid id) : base($"User with id:{id} not found.",HttpStatusCode.NotFound)
         {
         }
     }

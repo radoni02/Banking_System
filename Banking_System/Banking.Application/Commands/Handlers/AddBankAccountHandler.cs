@@ -23,12 +23,12 @@ namespace Banking.Application.Commands.Handlers
 
         public async Task HandleAsync(AddBankAccount command, CancellationToken cancellationToken = new CancellationToken())
         {
-            var user = await _userRepository.GetAsync(command.ownerId);
+            var user = await _userRepository.GetAsync(command.OwnerId);
             if(user is null)
             {
-                throw new UserNotFoundException();
+                throw new UserNotFoundException(command.OwnerId);
             }
-            var account =  _bankAccountFactory.CreateAccount(command.type,command.card,DateTime.UtcNow,command.ownerId);
+            var account =  _bankAccountFactory.CreateAccount(command.Type,command.Card,DateTime.UtcNow,command.OwnerId);
             if(account is null)
             {
                 throw new AccountNotFoundException();

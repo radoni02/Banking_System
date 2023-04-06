@@ -25,7 +25,7 @@ namespace Banking.Application.Commands.Handlers
             var user =await _userRepository.GetAsync(command.UserId);
             if(user is null)
             {
-                throw new UserNotFoundException();
+                throw new UserNotFoundException(command.UserId);
             }
             foreach(var account in user.Accounts)
             {
