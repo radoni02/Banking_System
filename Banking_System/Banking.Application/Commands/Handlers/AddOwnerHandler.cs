@@ -26,8 +26,8 @@ namespace Banking.Application.Commands.Handlers
             {
                 throw new UserNotFoundException(command.OwnerId);
             }
-            var result = await _userRepository.ExistByIdAsync(command.newOwnerId);
-            if(!result)
+            var newOwner = await _userRepository.GetAsync(command.newOwnerId);
+            if(newOwner is null)
             {
                 throw new UserNotFoundException(command.newOwnerId);
             }
@@ -36,6 +36,7 @@ namespace Banking.Application.Commands.Handlers
             {
                 throw new AccountNotFoundException();
             }
+            newOwner.AddBankAccount(account);
             account.AddOwnerToAccount(command.newOwnerId, account.Type);
             await _userRepository.UpdateAsync(user);
             await _bankAccountRepository.UpdateAsync(account);
