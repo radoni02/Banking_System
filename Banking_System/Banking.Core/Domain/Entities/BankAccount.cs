@@ -191,7 +191,16 @@ namespace Banking.Core.Domain.Entities
         }
         public void RemoveBalanceFromAccount(Currency currency)
         {
-            var balance = CheckIfBalanceExists(currency);
+            if(currency is Currency.PLN)
+            {
+                throw new InvalidCurrnecySelectedException();
+            }
+            var balance = _accountBalances.FirstOrDefault(x => x.Currency == currency);
+            if(balance is null)
+            {
+                throw new CurrencyNotFoundException(currency);
+            }
+            //var balance = CheckIfBalanceExists(currency);
             _accountBalances.Remove(balance);
             AddEvent(new BalanceRemoved(this, balance));
         }

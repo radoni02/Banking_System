@@ -26,9 +26,11 @@ namespace Banking.Core.Domain.Factories.BankAccountFactory
         {
             var accountNumber = AccountNumber.Create(_generatorService.AccountNumberGenerator());
             var bankingCard = _generatorService.BankingCardGenerator(card);
+
             var cardType = card is BankCard.CreditCard ?
                 BankingCard.CreateCreditCard(bankingCard.CardNumber,bankingCard.CardHolderName,card,bankingCard.CardValidityDate,bankingCard.CVV)
                 : BankingCard.CreateDebitCard(bankingCard.CardNumber, bankingCard.CardHolderName, card, bankingCard.CardValidityDate, bankingCard.CVV);
+
             var bankAccount = Create(accountType, cardType, createdAt, accountNumber);
             bankAccount.AddOwnerToAccount(ownerId,accountType);
             bankAccount.AddBalanceToAccount(Currency.PLN,accountType);
