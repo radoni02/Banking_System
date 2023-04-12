@@ -36,6 +36,16 @@ namespace Banking.Core.Domain.ValueObjects
             }
             return new Pin(pin);
         }
+
+        public bool EnsurePin(Pin pin)
+        {
+            if(pin != this)
+            {
+                return false;
+            }
+            return true;
+        }
+
         public override IEnumerable<object> GetAtomicValues()
         {
             yield return Value;

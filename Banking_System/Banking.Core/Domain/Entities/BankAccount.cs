@@ -49,6 +49,23 @@ namespace Banking.Core.Domain.Entities
             ModifiedAt = DateTime.UtcNow;
         }
 
+        public void UpdatePin(Pin pin)
+        {
+            Pin = Pin.Create(pin.Value);
+        }
+        public bool EnsureThatOldPinIsValid(Pin oldPin)
+        {
+            if(!Pin.EnsurePin(oldPin))
+            {
+                throw new InvalidOldPinException();
+            }
+            return true;
+        }
+        public void UpdateCard(BankingCard card)
+        {
+            Card = card;
+        }
+
         public void AddTransfer(BankTransfer banktransfer)
         {
             if(banktransfer.Status!=TransferStatus.Successful)
