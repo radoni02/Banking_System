@@ -15,7 +15,5 @@ namespace Banking.Application.Exceptions
         }
 
         public HttpStatusCode ErrorCode { get; }
-
-        
     }
 }

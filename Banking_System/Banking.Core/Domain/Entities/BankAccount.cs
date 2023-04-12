@@ -17,19 +17,6 @@ namespace Banking.Core.Domain.Entities
 
         private readonly List<Guid> _ownersId = new();
         private readonly List<Money> _accountBalances = new();
-        internal BankAccount(  Guid bankAccountId,
-            AccountType type,
-            BankingCard card,
-            DateTime createdAt,
-            DateTime modifiedAt,
-            AccountNumber accountNumber) : base(bankAccountId)
-        {
-            Type = type;
-            Card = card;
-            CreatedAt = createdAt;
-            ModifiedAt = modifiedAt;
-            AccountNumber = accountNumber;
-        }
         internal BankAccount( 
             AccountType type,
             BankingCard card,
@@ -52,16 +39,6 @@ namespace Banking.Core.Domain.Entities
         public IEnumerable<Guid> OwnersId => _ownersId;
         public IEnumerable<Money> AccountBalances => _accountBalances;
 
-        public void SetPin(Pin pin)
-        {
-            Pin = pin;
-        }
-
-        public void SetCard(BankingCard card)
-        {
-            Card = card;
-        }
-
         public void SetType(AccountType type)
         {
             Type = type;
@@ -70,11 +47,6 @@ namespace Banking.Core.Domain.Entities
         public void AccountModifiedAt()
         {
             ModifiedAt = DateTime.UtcNow;
-        }
-
-        public void SetAccountNumber(AccountNumber accountNumber)
-        {
-            AccountNumber = accountNumber;
         }
 
         public void AddTransfer(BankTransfer banktransfer)
@@ -117,16 +89,6 @@ namespace Banking.Core.Domain.Entities
 
         }
 
-        public void UpdateBankAcconut(Guid ownerId,AccountType type,BankingCard card,AccountNumber accountNumber)
-        {
-            SetType(type);
-            SetCard(card);
-            SetAccountNumber(accountNumber);
-            AccountModifiedAt();
-            AddEvent(new BankAccountUpdated(ownerId, type, card, accountNumber));
-
-
-        }
         public void UpdateMoneyBalanceSender(Money money,decimal amount)
         {
             money.CheckCurrency(money.Currency);
