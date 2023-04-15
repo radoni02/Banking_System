@@ -61,9 +61,12 @@ namespace Banking.Core.Domain.Entities
             }
             return true;
         }
-        public void UpdateCard(BankingCard card)
+
+        public void ChangeCardtype(BankingCard card)
         {
-            Card = card;
+            Card = card.Type is BankCard.CreditCard ?
+                BankingCard.CreateDebitCard(card.CardNumber, card.CardHolderName, BankCard.DebitCard, card.CardValidityDate, card.CVV)
+                : BankingCard.CreateCreditCard(card.CardNumber, card.CardHolderName, BankCard.CreditCard, card.CardValidityDate, card.CVV);
         }
 
         public void AddTransfer(BankTransfer banktransfer)
