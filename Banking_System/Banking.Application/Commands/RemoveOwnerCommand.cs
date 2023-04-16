@@ -7,5 +7,7 @@ using System.Threading.Tasks;
 
 namespace Banking.Application.Commands
 {
-    public record AddOwner(Guid OwnerId,Guid BankAccountId,Guid newOwnerId) : ICommand;
+    public record RemoveOwnerCommand(Guid OwnerId,Guid AccountId,Guid OwnerIdToRemove) : ICommand;
+    
+    
 }

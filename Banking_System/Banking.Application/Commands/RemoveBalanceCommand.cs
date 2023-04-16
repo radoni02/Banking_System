@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Banking.Application.Commands
 {
-    public record AddBalance(Guid OwnerId,AccountType Type,Currency Currency) : ICommand;
-    
-    
+    public record RemoveBalanceCommand(Guid UserId,Currency Currency) : ICommand
+    {
+    }
 }

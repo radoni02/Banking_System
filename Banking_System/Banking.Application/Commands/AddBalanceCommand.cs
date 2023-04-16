@@ -1,5 +1,4 @@
 ﻿using Banking.Core.Domain.Consts;
-using Banking.Core.Domain.ValueObjects;
 using Convey.CQRS.Commands;
 using System;
 using System.Collections.Generic;
@@ -9,5 +8,7 @@ using System.Threading.Tasks;
 
 namespace Banking.Application.Commands
 {
-    public record AddBankAccount( Guid OwnerId, BankCard Card,AccountType Type) : ICommand;
+    public record AddBalanceCommand(Guid OwnerId,AccountType Type,Currency Currency) : ICommand;
+    
+    
 }

@@ -1,5 +1,4 @@
-﻿using Banking.Core.Domain.Consts;
-using Convey.CQRS.Commands;
+﻿using Convey.CQRS.Commands;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +7,5 @@ using System.Threading.Tasks;
 
 namespace Banking.Application.Commands
 {
-    public record RemoveBalance(Guid UserId,Currency Currency) : ICommand
-    {
-    }
+    public record AddOwnerCommand(Guid OwnerId,Guid BankAccountId,Guid newOwnerId) : ICommand;
 }

@@ -9,18 +9,18 @@ using System.Threading.Tasks;
 
 namespace Banking.Application.Commands.Handlers
 {
-    public class RemoveOwnerHandler : ICommandHandler<RemoveOnwer>
+    public class RemoveOwnerCommandHandler : ICommandHandler<RemoveOwnerCommand>
     {
         private readonly IUserRepository _userRepository;
         private readonly IBankAccountRepository _bankAccountRepository;
 
-        public RemoveOwnerHandler(IUserRepository userRepository, IBankAccountRepository bankAccountRepository)
+        public RemoveOwnerCommandHandler(IUserRepository userRepository, IBankAccountRepository bankAccountRepository)
         {
             _userRepository = userRepository;
             _bankAccountRepository = bankAccountRepository;
         }
 
-        public async Task HandleAsync(RemoveOnwer command, CancellationToken cancellationToken = new CancellationToken())
+        public async Task HandleAsync(RemoveOwnerCommand command, CancellationToken cancellationToken = new CancellationToken())
         {
             var user = await _userRepository.GetAsync(command.OwnerId);
             if (user is null)

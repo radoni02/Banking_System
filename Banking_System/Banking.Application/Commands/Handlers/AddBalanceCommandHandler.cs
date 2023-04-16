@@ -9,31 +9,33 @@ using System.Threading.Tasks;
 
 namespace Banking.Application.Commands.Handlers
 {
-    public class RemoveBalanceHandler : ICommandHandler<RemoveBalance>
+    public class AddBalanceCommandHandler : ICommandHandler<AddBalanceCommand>
     {
         private readonly IUserRepository _userRepository;
         private readonly IBankAccountRepository _bankAccountRepository;
 
-        public RemoveBalanceHandler(IUserRepository userRepository, IBankAccountRepository bankAccountRepository)
+        public AddBalanceCommandHandler(IUserRepository userRepository, IBankAccountRepository bankAccountRepository)
         {
             _userRepository = userRepository;
             _bankAccountRepository = bankAccountRepository;
         }
 
-        public async Task HandleAsync(RemoveBalance command, CancellationToken cancellationToken = new CancellationToken())
+        public async Task HandleAsync(AddBalanceCommand command, CancellationToken cancellationToken = new CancellationToken())
         {
-            var user = await _userRepository.GetAsync(command.UserId);
+            var user = await _userRepository.GetAsync(command.OwnerId);
             if(user is null)
             {
-                throw new UserNotFoundException(command.UserId);
+                throw new UserNotFoundException(command.OwnerId);
             }
-            var account = user.Accounts.FirstOrDefault(x => x.Type == Core.Domain.Consts.AccountType.ForeignExchangeAccount);
+            var account = user.Accounts.FirstOrDefault(x => x.Type == command.Type);
             if(account is null)
             {
                 throw new AccountNotFoundException();
             }
-            account.RemoveBalanceFromAccount(command.Currency);
+            account.AddBalanceToAccount(command.Currency,command.Type);
             await _bankAccountRepository.UpdateAsync(account);
+
+
         }
     }
 }

@@ -10,18 +10,18 @@ using System.Threading.Tasks;
 
 namespace Banking.Application.Commands.Handlers
 {
-    public class AddBankAccountHandler : ICommandHandler<AddBankAccount>
+    public class AddBankAccountCommandHandler : ICommandHandler<AddBankAccountCommand>
     {
         private readonly IBankAccountFactory _bankAccountFactory;
         private readonly IUserRepository _userRepository;
 
-        public AddBankAccountHandler(IBankAccountFactory bankAccountFactory, IUserRepository userRepository)
+        public AddBankAccountCommandHandler(IBankAccountFactory bankAccountFactory, IUserRepository userRepository)
         {
             _bankAccountFactory = bankAccountFactory;
             _userRepository = userRepository;
         }
 
-        public async Task HandleAsync(AddBankAccount command, CancellationToken cancellationToken = new CancellationToken())
+        public async Task HandleAsync(AddBankAccountCommand command, CancellationToken cancellationToken = new CancellationToken())
         {
             var user = await _userRepository.GetAsync(command.OwnerId);
             if(user is null)
