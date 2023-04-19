@@ -10,4 +10,8 @@
     <ProjectReference Include="..\Banking.Application\Banking.Application.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Database\Contexts\" />
+  </ItemGroup>
+
 </Project>
