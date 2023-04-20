@@ -9,6 +9,5 @@ using System.Threading.Tasks;
 namespace Banking.Application.Queries
 {
     public record GetAllBankAccountTransfersQuery(Guid UserId,Guid AccountId) : IQuery<IEnumerable<BankTransferDto>>;
-    {
-    }
+
 }
