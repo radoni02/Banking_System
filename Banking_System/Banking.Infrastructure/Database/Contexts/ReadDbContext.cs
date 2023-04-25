@@ -12,9 +12,9 @@ namespace Banking.Infrastructure.Database.Contexts
     {
         public DbSet<UserReadModel> Users { get; set; }
         public DbSet<BankAccountReadModel> BankAccounts { get; set; }
-        public DbSet<BankTransferReadModel> Transfers { get; set; }
-        public DbSet<MoneyReadModel> Balances { get; set; }
-        public DbSet<BankingCardReadModel> BankingCards { get; set; }
+        //public DbSet<BankTransferReadModel> Transfers { get; set; }
+        //public DbSet<MoneyReadModel> Balances { get; set; }
+        //public DbSet<BankingCardReadModel> BankingCards { get; set; }
 
         public ReadDbContext(DbContextOptions<ReadDbContext> options) : base(options) { }
 

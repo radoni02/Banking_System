@@ -13,9 +13,9 @@ namespace Banking.Infrastructure.Database.Contexts
     {
         public DbSet<User> Users { get; set; }
         public DbSet<BankAccount> BankAccounts { get; set; }
-        public DbSet<BankTransfer> Transfers { get; set; }
-        public DbSet<Money> Balances { get; set; }
-        public DbSet<BankingCard> BankingCards { get; set; }
+        //public DbSet<BankTransfer> Transfers { get; set; }
+        //public DbSet<Money> Balances { get; set; }
+        //public DbSet<BankingCard> BankingCards { get; set; }
 
         public WriteDbContext(DbContextOptions<WriteDbContext> options) : base(options) { }
 

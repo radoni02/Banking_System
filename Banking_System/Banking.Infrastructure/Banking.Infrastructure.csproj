@@ -16,7 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Database\EntityConfiguration\" />
+    <Folder Include="Database\EntityConfiguration\WriteConfig\" />
   </ItemGroup>
 
 </Project>
