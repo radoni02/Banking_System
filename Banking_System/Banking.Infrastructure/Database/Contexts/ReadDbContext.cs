@@ -21,6 +21,7 @@ namespace Banking.Infrastructure.Database.Contexts
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.HasDefaultSchema("Banking System");
+            base.OnModelCreating(modelBuilder);
         }
     }
 }
