@@ -21,7 +21,6 @@ namespace Banking.Core.Domain.ValueObjects
             Currency = currency;
             Status = TransferStatus.Pending;
         }
-
         public DateTime CreatedAt { get;init; } = DateTime.UtcNow;
         public bool IsConstant { get;init; }
         public string Title { get; init; }

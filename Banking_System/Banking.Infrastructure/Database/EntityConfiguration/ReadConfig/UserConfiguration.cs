@@ -10,7 +10,7 @@ namespace Banking.Infrastructure.Database.EntityConfiguration.ReadConfig
         public void Configure(EntityTypeBuilder<UserReadModel> builder)
         {
             builder.ToTable("Users");
-            builder.HasKey(t => t.Id);
+            builder.HasKey(u => u.Id);
 
             builder.Property(u=>u.FirstName)
                 .IsRequired()
@@ -47,6 +47,7 @@ namespace Banking.Infrastructure.Database.EntityConfiguration.ReadConfig
 
             builder.HasMany(u => u.Accounts)
                 .WithMany();
+                
                 
 
 
