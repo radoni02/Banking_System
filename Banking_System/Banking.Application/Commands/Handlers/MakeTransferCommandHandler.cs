@@ -48,20 +48,23 @@ namespace Banking.Application.Commands.Handlers
                                                                 senderAccount.Card.Type,
                                                                 TransferStatus.Created,
                                                                 properSenderBalance);
+            var reciverAccount = await _bankAccountRepository.GetByAccountNumberAsync(command.Transferdata.AccountNumber);
+            if (reciverAccount is null)
+            {
+                status = TransferStatus.Failed;
+                throw new ReciverAccountNotFoundException();
+            }
             var bankTransfer = BankTransfer.Create(command.Transferdata.Title,
                                                     command.Transferdata.Amount,
                                                     command.Transferdata.ReceiverAdressAndData,
                                                     status,
                                                     command.Transferdata.IsConstant,
                                                     command.Transferdata.AccountNumber,
-                                                    Currency.PLN);
+                                                    Currency.PLN,
+                                                    senderAccount.Id,
+                                                    reciverAccount.Id);
             senderAccount.UpdateMoneyBalanceSender(properSenderBalance,command.Transferdata.Amount);
-            var reciverAccount = await _bankAccountRepository.GetByAccountNumberAsync(command.Transferdata.AccountNumber);
-            if(reciverAccount is null)
-            {
-                status = TransferStatus.Failed;
-                throw new ReciverAccountNotFoundException();
-            }
+            
             status = reciverAccount.CurrencyChecking(command.Transferdata.Currency,status,command.Transferdata.Amount);
             if (status is not TransferStatus.Successful)
             {

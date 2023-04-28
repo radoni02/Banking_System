@@ -10,7 +10,7 @@ namespace Banking.Core.Domain.ValueObjects
 {
     public sealed class BankTransfer
     {
-        private BankTransfer( bool isConstant, string title, decimal amount, string receiverAdressAndData, AccountNumber accountNumber, Currency currency)
+        private BankTransfer( bool isConstant, string title, decimal amount, string receiverAdressAndData, AccountNumber accountNumber, Currency currency, Guid senderId, Guid reciverId)
         {
             CreatedAt = DateTime.UtcNow;
             IsConstant = isConstant;
@@ -20,7 +20,11 @@ namespace Banking.Core.Domain.ValueObjects
             AccountNumber = accountNumber;
             Currency = currency;
             Status = TransferStatus.Pending;
+            SenderId = senderId;
+            ReciverId = reciverId;
         }
+        public Guid SenderId { get; init; }
+        public Guid ReciverId { get; init; }
         public DateTime CreatedAt { get;init; } = DateTime.UtcNow;
         public bool IsConstant { get;init; }
         public string Title { get; init; }
@@ -30,7 +34,13 @@ namespace Banking.Core.Domain.ValueObjects
         public Currency Currency { get;init; }
         public TransferStatus Status { get;private set; }
 
-        public static BankTransfer Create(string title, decimal amount, string receiverAdressAndData, TransferStatus status, bool isConstant, AccountNumber accountNumber,Currency currency)
+        public static BankTransfer Create(string title, decimal amount,
+                                                        string receiverAdressAndData,
+                                                        TransferStatus status,
+                                                        bool isConstant,
+                                                        AccountNumber accountNumber,
+                                                        Currency currency,
+                                                        Guid senderId,Guid reciverId)
         { 
 
             //zastanowic sie jak zrobic ta metode static zeby moc uwtorzyc obiekt trasfer w handlerku
@@ -49,11 +59,11 @@ namespace Banking.Core.Domain.ValueObjects
                 status = TransferStatus.Failed;
                 throw new TransferAmountCannotBeLessThenZeroException();
            }
-           return new BankTransfer( isConstant, title,amount,receiverAdressAndData, accountNumber, currency);
+           return new BankTransfer( isConstant, title,amount,receiverAdressAndData, accountNumber, currency,senderId,reciverId);
         }
         public BankTransfer ModifyStatus(TransferStatus status)
         {
-            return new BankTransfer(IsConstant, Title, Amount, ReceiverAdressAndData, AccountNumber, Currency)
+            return new BankTransfer(IsConstant, Title, Amount, ReceiverAdressAndData, AccountNumber, Currency,SenderId,ReciverId)
             {
                 Status = status
             };
@@ -65,7 +75,9 @@ namespace Banking.Core.Domain.ValueObjects
                 -transfer.Amount,
                 transfer.ReceiverAdressAndData,
                 transfer.AccountNumber,
-                transfer.Currency);
+                transfer.Currency,
+                transfer.SenderId,
+                transfer.ReciverId);
         }
 
     }
