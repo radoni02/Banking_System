@@ -36,10 +36,14 @@ namespace Banking.Infrastructure.Database.EntityConfiguration.ReadConfig
             builder.HasIndex(a => a.AccountNumber).IsUnique();
 
             builder.HasMany(a => a.Transfers)
-                .WithMany();
+                .WithOne()
+                .HasForeignKey(t => t.SenderId)
+                .HasForeignKey(t => t.ReciverId);
+                
 
             builder.HasMany(a => a.Balances)
                 .WithOne();
+
 
 
 
