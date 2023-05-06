@@ -1,4 +1,5 @@
-﻿using Banking.Infrastructure.Database.Models;
+﻿using Banking.Infrastructure.Database.EntityConfiguration.ReadConfig;
+using Banking.Infrastructure.Database.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -12,15 +13,16 @@ namespace Banking.Infrastructure.Database.Contexts
     {
         public DbSet<UserReadModel> Users { get; set; }
         public DbSet<BankAccountReadModel> BankAccounts { get; set; }
-        //public DbSet<BankTransferReadModel> Transfers { get; set; }
-        //public DbSet<MoneyReadModel> Balances { get; set; }
-        //public DbSet<BankingCardReadModel> BankingCards { get; set; }
 
         public ReadDbContext(DbContextOptions<ReadDbContext> options) : base(options) { }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.HasDefaultSchema("Banking System");
+            var bankAccountConfiguration = new BankAccountConfiguration();
+            var userConfiguration = new UserConfiguration();
+            modelBuilder.ApplyConfiguration<BankAccountReadModel>(bankAccountConfiguration);
+            modelBuilder.ApplyConfiguration<UserReadModel>(userConfiguration);
             base.OnModelCreating(modelBuilder);
         }
     }
