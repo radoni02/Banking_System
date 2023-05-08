@@ -14,26 +14,6 @@ namespace Banking.Core.Domain.Entities
     public sealed class User : AggregateRoot
     {
         private readonly List<BankAccount> _accounts = new();
-        private User(
-            Guid userId,
-            string firstName,
-            string lastName,
-            Gender gender,
-            Pesel pesel,
-            string login,
-            PhoneNumber phoneNumber,
-            EmailAddress emailAddress,
-            DateTime createdAt) : base(userId)
-        {
-            FirstName = firstName;
-            LastName = lastName;
-            Gender = gender;
-            Pesel = pesel;
-            Login = login;
-            PhoneNumber = phoneNumber;
-            EmailAddress = emailAddress;
-            CreatedAt = createdAt;
-        }
         public string FirstName { get;private set; }
         public string LastName { get;private set; }
         public Gender Gender { get; init; }
@@ -41,6 +21,8 @@ namespace Banking.Core.Domain.Entities
         public string Login { get;private set; }
         public PhoneNumber PhoneNumber { get;private set; }
         public EmailAddress EmailAddress { get;private set; }
+
+        public DateTime Birthday { get; init; }
         public DateTime CreatedAt { get; init; }
         public DateTime ModifiedAt { get; private set; }
 
@@ -53,6 +35,7 @@ namespace Banking.Core.Domain.Entities
             string login,
             PhoneNumber phoneNumber,
             EmailAddress emailAddress,
+            DateTime birthday,
             DateTime createdAt) : base(Guid.NewGuid())
         {
 
@@ -63,6 +46,7 @@ namespace Banking.Core.Domain.Entities
             Login = login;
             PhoneNumber = phoneNumber;
             EmailAddress = emailAddress;
+            Birthday = birthday;
             CreatedAt = createdAt;
         }
         public void SetFirstName(string firstName)

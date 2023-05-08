@@ -23,12 +23,12 @@ namespace Banking.Application.Commands.Handlers
 
         public async Task HandleAsync(CreateUserCommand command, CancellationToken cancellationToken = new CancellationToken())
         {
-            var (UserId,FirstName, LastName, Gender, Pesel, PhoneNumber, EmailAddress) = command;
+            var (UserId,FirstName, LastName, Gender, Pesel, PhoneNumber, EmailAddress,Birthday) = command;
             if(await _userRepository.ExistByIdAsync(UserId))
             {
                 throw new UserIdAlreadyTakenException();
             }
-            var user = _userFactory.Create(FirstName, LastName, Gender, Pesel, PhoneNumber, EmailAddress);
+            var user = _userFactory.Create(FirstName, LastName, Gender, Pesel, PhoneNumber, EmailAddress,Birthday);
             await _userRepository.AddAsync(user);
         }
     }

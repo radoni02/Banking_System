@@ -12,13 +12,14 @@ namespace Banking.Core.Domain.Factories.UserFactory
 {
     internal sealed class UserFactory : IUserFactory
     {
-        public User Create(string FirstName, string LastName, Gender gender, Pesel pesel, PhoneNumber phoneNumber, EmailAddress emailAddress)
+        public User Create(string FirstName, string LastName, Gender gender, Pesel pesel, PhoneNumber phoneNumber, EmailAddress emailAddress, DateTime birthday)
         {
             var LoginPart1 = FirstName.Substring(0, 3);
             var LoginPart2 = LastName.Substring(0, 3);
             //there will be external service to generate random number
             var login = LoginPart1 + LoginPart2;
-            var user = new User(FirstName, LastName, gender, pesel, login, phoneNumber, emailAddress, DateTime.UtcNow);
+            var peselObject = Pesel.Create(pesel.Value, birthday);
+            var user = new User(FirstName, LastName, gender, peselObject, login, phoneNumber, emailAddress, DateTime.UtcNow,birthday);
             return user;
         }
 
