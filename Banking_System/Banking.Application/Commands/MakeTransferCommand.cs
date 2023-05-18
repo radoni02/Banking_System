@@ -1,4 +1,5 @@
 ﻿using Banking.Application.Dto;
+using Banking.Core.Domain.Consts;
 using Convey.CQRS.Commands;
 using System;
 using System.Collections.Generic;
@@ -8,7 +9,8 @@ using System.Threading.Tasks;
 
 namespace Banking.Application.Commands
 {
-    public record MakeTransferCommand(Guid UserId,Guid AccountId, BankTransferDto Transferdata) : ICommand;
+    public record MakeTransferCommand(Guid UserId,Guid AccountId, bool IsConstant,
+        string Title, decimal Amount, string ReceiverAdressAndData, string AccountNumber, Currency Currency) : ICommand;
     
     
 }

@@ -8,5 +8,5 @@ using System.Threading.Tasks;
 
 namespace Banking.Application.Commands
 {
-    public record UpdateBankAccountPinCommand(Guid UserId,Guid AccountId,Pin newPin, Pin oldPin) : ICommand;
+    public record UpdateBankAccountPinCommand(Guid UserId,Guid AccountId,string newPin, string oldPin) : ICommand;
 }

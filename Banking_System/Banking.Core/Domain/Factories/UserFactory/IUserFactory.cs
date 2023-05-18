@@ -11,6 +11,6 @@ namespace Banking.Core.Domain.Factories.UserFactory
 {
     public interface IUserFactory
     {
-        User Create( string FirstName, string LastName, Gender gender, Pesel pesel, PhoneNumber phoneNumber, EmailAddress emailAddress,DateTime birthday);
+        User Create( string FirstName, string LastName, Gender gender, string pesel, string phoneNumber, string emailAddress,DateTime birthday);
     }
 }

@@ -21,6 +21,7 @@ namespace Banking.Core.Domain.Entities
             AccountType type,
             BankingCard card,
             DateTime createdAt,
+            Pin pin,
             AccountNumber accountNumber) : base(Guid.NewGuid())
         {
             Type = type;
@@ -49,11 +50,11 @@ namespace Banking.Core.Domain.Entities
             ModifiedAt = DateTime.UtcNow;
         }
 
-        public void UpdatePin(Pin pin)
+        public void UpdatePin(string pin)
         {
-            Pin = Pin.Create(pin.Value);
+            Pin = Pin.Create(pin);
         }
-        public bool EnsureThatOldPinIsValid(Pin oldPin)
+        public bool EnsureThatOldPinIsValid(string oldPin)
         {
             if(!Pin.EnsurePin(oldPin))
             {

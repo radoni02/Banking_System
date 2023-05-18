@@ -59,14 +59,14 @@ namespace Banking.Core.Domain.Entities
             LastName = lastName;
         }
 
-        public void SetPhoneNumber(PhoneNumber phoneNumber)
+        public void SetPhoneNumber(string phoneNumber)
         {
-            PhoneNumber = phoneNumber;
+            PhoneNumber = PhoneNumber.Create(phoneNumber);
         }
 
-        public void SetEmailAddress(EmailAddress emailAddress)
+        public void SetEmailAddress(string emailAddress)
         {
-            EmailAddress = emailAddress;
+            EmailAddress = EmailAddress.Create(emailAddress);
         }
 
         public void UserModifiedAt()
@@ -74,7 +74,7 @@ namespace Banking.Core.Domain.Entities
             ModifiedAt = DateTime.UtcNow;
         }
 
-        public void UpdateUser(string firstName,string lastName, PhoneNumber phoneNumber, EmailAddress emailAddress)
+        public void UpdateUser(string firstName,string lastName, string phoneNumber, string emailAddress)
         {
             SetFirstName(firstName);
             SetLastName(lastName);

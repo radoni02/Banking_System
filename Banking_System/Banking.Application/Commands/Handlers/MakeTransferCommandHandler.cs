@@ -39,37 +39,37 @@ namespace Banking.Application.Commands.Handlers
             {
                 throw new AccountNotFoundException();
             }
-            var properSenderBalance = senderAccount.AccountBalances.FirstOrDefault(x => x.Currency == command.Transferdata.Currency);
+            var properSenderBalance = senderAccount.AccountBalances.FirstOrDefault(x => x.Currency == command.Currency);
             if(properSenderBalance is null)
             {
-                throw new SenderBalanceNotFoundException(command.Transferdata.Currency);
+                throw new SenderBalanceNotFoundException(command.Currency);
             }
-            var status = senderAccount.CheckIfSenderHaveEnoughMoney(command.Transferdata.Amount,
+            var status = senderAccount.CheckIfSenderHaveEnoughMoney(command.Amount,
                                                                 senderAccount.Card.Type,
                                                                 TransferStatus.Created,
                                                                 properSenderBalance);
-            var reciverAccount = await _bankAccountRepository.GetByAccountNumberAsync(command.Transferdata.AccountNumber);
+            var reciverAccount = await _bankAccountRepository.GetByAccountNumberAsync(command.AccountNumber);
             if (reciverAccount is null)
             {
                 status = TransferStatus.Failed;
                 throw new ReciverAccountNotFoundException();
             }
-            var bankTransfer = BankTransfer.Create(command.Transferdata.Title,
-                                                    command.Transferdata.Amount,
-                                                    command.Transferdata.ReceiverAdressAndData,
+            var bankTransfer = BankTransfer.Create(command.Title,
+                                                    command.Amount,
+                                                    command.ReceiverAdressAndData,
                                                     status,
-                                                    command.Transferdata.IsConstant,
-                                                    command.Transferdata.AccountNumber,
+                                                    command.IsConstant,
+                                                    command.AccountNumber,
                                                     Currency.PLN,
                                                     senderAccount.Id,
                                                     reciverAccount.Id);
-            senderAccount.UpdateMoneyBalanceSender(properSenderBalance,command.Transferdata.Amount);
+            senderAccount.UpdateMoneyBalanceSender(properSenderBalance,command.Amount);
             
-            status = reciverAccount.CurrencyChecking(command.Transferdata.Currency,status,command.Transferdata.Amount);
+            status = reciverAccount.CurrencyChecking(command.Currency,status,command.Amount);
             if (status is not TransferStatus.Successful)
             {
                 //we assume that default currency is PLN
-                var amountInPln = _currencyChanger.ChangeCurrency(properSenderBalance.Currency,command.Transferdata.Amount);
+                var amountInPln = _currencyChanger.ChangeCurrency(properSenderBalance.Currency,command.Amount);
                 var properReciverBalance = reciverAccount.AccountBalances.FirstOrDefault(x => x.Currency == Currency.PLN);
                 if(properReciverBalance is null)
                 {

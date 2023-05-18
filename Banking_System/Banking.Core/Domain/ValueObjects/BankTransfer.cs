@@ -38,12 +38,12 @@ namespace Banking.Core.Domain.ValueObjects
                                                         string receiverAdressAndData,
                                                         TransferStatus status,
                                                         bool isConstant,
-                                                        AccountNumber accountNumber,
+                                                        string accountNumber,
                                                         Currency currency,
                                                         Guid senderId,Guid reciverId)
-        { 
+        {
 
-            //zastanowic sie jak zrobic ta metode static zeby moc uwtorzyc obiekt trasfer w handlerku
+           var accNumber = AccountNumber.Create(accountNumber);
            if(string.IsNullOrWhiteSpace(title))
            {
                 status = TransferStatus.Failed;
@@ -59,7 +59,7 @@ namespace Banking.Core.Domain.ValueObjects
                 status = TransferStatus.Failed;
                 throw new TransferAmountCannotBeLessThenZeroException();
            }
-           return new BankTransfer( isConstant, title,amount,receiverAdressAndData, accountNumber, currency,senderId,reciverId);
+           return new BankTransfer( isConstant, title,amount,receiverAdressAndData, accNumber, currency,senderId,reciverId);
         }
         public BankTransfer ModifyStatus(TransferStatus status)
         {

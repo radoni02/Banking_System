@@ -41,12 +41,12 @@ namespace Banking.Infrastructure.Database.Repositories
             .Include(x => x.Transfers)
             .FirstOrDefaultAsync(x => x.Id == id);
 
-        public async Task<BankAccount> GetByAccountNumberAsync(AccountNumber accountNumber)
+        public async Task<BankAccount> GetByAccountNumberAsync(string accountNumber)
             => await _bankAccounts
             .Include(x => x.AccountBalances)
             .Include(x => x.OwnersId)
             .Include(x => x.Transfers)
-            .FirstOrDefaultAsync(x => x.AccountNumber.Value == accountNumber.Value);
+            .FirstOrDefaultAsync(x => x.AccountNumber.Value == accountNumber);
 
         public async Task UpdateAsync(BankAccount account)
         {

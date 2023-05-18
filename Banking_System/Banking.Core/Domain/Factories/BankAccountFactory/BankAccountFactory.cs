@@ -19,19 +19,20 @@ namespace Banking.Core.Domain.Factories.BankAccountFactory
             _generatorService = generatorService;
         }
 
-        private BankAccount Create(AccountType type, BankingCard card, DateTime createdAt, AccountNumber accountNumber)
-            => new(type, card, createdAt, accountNumber);
+        private BankAccount Create(AccountType type, BankingCard card, DateTime createdAt, AccountNumber accountNumber, Pin pin)
+            => new(type, card, createdAt,pin, accountNumber);
 
-        public BankAccount CreateAccount(AccountType accountType ,BankCard card, DateTime createdAt,Guid ownerId)
+        public BankAccount CreateAccount(AccountType accountType ,BankCard card, DateTime createdAt,Guid ownerId, string pin)
         {
             var accountNumber = AccountNumber.Create(_generatorService.AccountNumberGenerator());
             var bankingCard = _generatorService.BankingCardGenerator(card);
+            var pinObject = Pin.Create(pin);
 
             var cardType = card is BankCard.CreditCard ?
                 BankingCard.CreateCreditCard(bankingCard.CardNumber,bankingCard.CardHolderName,card,bankingCard.CardValidityDate,bankingCard.CVV)
                 : BankingCard.CreateDebitCard(bankingCard.CardNumber, bankingCard.CardHolderName, card, bankingCard.CardValidityDate, bankingCard.CVV);
 
-            var bankAccount = Create(accountType, cardType, createdAt, accountNumber);
+            var bankAccount = Create(accountType, cardType, createdAt,accountNumber, pinObject);
             bankAccount.AddOwnerToAccount(ownerId,accountType);
             bankAccount.AddBalanceToAccount(Currency.PLN,accountType);
             return bankAccount;

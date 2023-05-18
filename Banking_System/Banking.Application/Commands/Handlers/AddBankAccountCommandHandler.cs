@@ -28,7 +28,7 @@ namespace Banking.Application.Commands.Handlers
             {
                 throw new UserNotFoundException(command.OwnerId);
             }
-            var account =  _bankAccountFactory.CreateAccount(command.Type,command.Card,DateTime.UtcNow,command.OwnerId);
+            var account =  _bankAccountFactory.CreateAccount(command.Type,command.Card,DateTime.UtcNow,command.OwnerId,command.pin);
             if(account is null)
             {
                 throw new AccountNotFoundException();

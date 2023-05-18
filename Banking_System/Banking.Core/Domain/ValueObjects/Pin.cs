@@ -37,9 +37,9 @@ namespace Banking.Core.Domain.ValueObjects
             return new Pin(pin);
         }
 
-        public bool EnsurePin(Pin pin)
+        public bool EnsurePin(string pin)
         {
-            if(pin != this)
+            if(!pin.Equals(this.Value))
             {
                 return false;
             }

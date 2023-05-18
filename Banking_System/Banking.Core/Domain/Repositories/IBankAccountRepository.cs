@@ -14,6 +14,6 @@ namespace Banking.Core.Domain.Repositories
         Task UpdateAsync(BankAccount account);
         Task DeleteAsync(BankAccount account);
         Task<BankAccount> GetAsync(Guid id);
-        Task<BankAccount> GetByAccountNumberAsync(AccountNumber accountNumber);
+        Task<BankAccount> GetByAccountNumberAsync(string accountNumber);
     }
 }
