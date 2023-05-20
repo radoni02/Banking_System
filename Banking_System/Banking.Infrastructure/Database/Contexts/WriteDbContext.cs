@@ -1,5 +1,6 @@
 ﻿using Banking.Core.Domain.Entities;
 using Banking.Core.Domain.ValueObjects;
+using Banking.Infrastructure.Database.EntityConfiguration.WriteConfig;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -13,15 +14,16 @@ namespace Banking.Infrastructure.Database.Contexts
     {
         public DbSet<User> Users { get; set; }
         public DbSet<BankAccount> BankAccounts { get; set; }
-        //public DbSet<BankTransfer> Transfers { get; set; }
-        //public DbSet<Money> Balances { get; set; }
-        //public DbSet<BankingCard> BankingCards { get; set; }
 
         public WriteDbContext(DbContextOptions<WriteDbContext> options) : base(options) { }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.HasDefaultSchema("Banking System");
+            var bankAccountConfiguration = new BankAccountConfiguration();
+            var userConfiguration = new UserConfiguration();
+            modelBuilder.ApplyConfiguration<BankAccount>(bankAccountConfiguration);
+            modelBuilder.ApplyConfiguration<User>(userConfiguration);
             base.OnModelCreating(modelBuilder);
         }
     }

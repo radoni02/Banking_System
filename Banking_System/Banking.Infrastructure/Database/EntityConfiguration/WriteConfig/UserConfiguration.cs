@@ -28,9 +28,10 @@ namespace Banking.Infrastructure.Database.EntityConfiguration.WriteConfig
                 .HasMaxLength(64)
                 .IsUnicode(true);
 
+
             //builder.Property(u => u.Pesel).HasConversion(
             //    pesel => pesel.Value,
-            //    value=>Pesel.Create(value));
+            //    value => Pesel.Create(value));
 
             builder.Property(u=>u.PhoneNumber).HasConversion(
                 phoneNumber=>phoneNumber.Value,
