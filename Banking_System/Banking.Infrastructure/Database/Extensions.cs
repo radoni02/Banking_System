@@ -1,5 +1,6 @@
 ﻿using Banking.Infrastructure.Database.Contexts;
 using Banking.Infrastructure.Database.Options;
+using Banking.Infrastructure.Database.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -15,6 +16,7 @@ namespace Banking.Infrastructure.Database
     {
         public static IServiceCollection AddPostgres(this IServiceCollection services,IConfiguration configuration)
         {
+            services.AddHostedService<AppInitializer>();
             var options = configuration.GetOptions<PostgresOptions>("Postgres");
             services.AddDbContext<ReadDbContext>(ctx => ctx.UseNpgsql(options.ConnectionString));
             services.AddDbContext<WriteDbContext>(ctx => ctx.UseNpgsql(options.ConnectionString));
