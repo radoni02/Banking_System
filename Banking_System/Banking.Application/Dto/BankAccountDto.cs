@@ -11,10 +11,11 @@ namespace Banking.Application.Dto
     public class BankAccountDto
     {
         [Required] public AccountType Type { get;  set; }
-        [Required] public string Card { get;  set; }
+        [Required] public BankingCardDto Card { get;  set; }
         [Required] public DateTime CreatedAt { get; set; }
         public DateTime? ModifiedAt { get;  set; }
         [Required] public string Pin { get;  set; }
         [Required] public string AccountNumber { get;  set; }
+        public IEnumerable<BankTransferDto> Transfers { get; set; }
     }
 }
